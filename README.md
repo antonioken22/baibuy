@@ -6,19 +6,24 @@ By Team BBLets
 
 #### Backend
 
-- Spring Boot (v3.4.4) - Java framework
-
-- MySQL (v8.0.41) - Database
-
+- Java 17 – Programming language
+- Spring Boot 3.4.4 – Main Java framework
+- Spring Web – REST API and controller layer
 - Spring Data JPA – ORM layer for MySQL
-
-- Spring Validation – Input validation
-
+- Spring Validation – Form and DTO validation
 - Thymeleaf – Server-side templating engine
+- MySQL 8.0.41 – Relational database
+- JDBC (MySQL Connector/J) – Database driver for MySQL
 
 #### Frontend
 
-- Bootstrap (v5.3.3)
+- Bootstrap 5.3.3 – CSS and UI layout framework (used in Thymeleaf templates)
+
+#### Developer Tools 
+
+- Spring Boot DevTools – Hot reload and dev experience
+- Lombok – Cleaner, boilerplate-free Java code (auto-generates getters, setters, etc.)
+- Spring Boot Test Starter – Unit and integration testing tools
 
 ## Prerequisites Before Running Locally
 
