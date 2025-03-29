@@ -2,6 +2,24 @@
 
 By Team BBLets
 
+## Technologies Used
+
+#### Backend
+
+- Spring Boot (v3.4.4) - Java framework
+
+- MySQL (v8.0.41) - Database
+
+- Spring Data JPA – ORM layer for MySQL
+
+- Spring Validation – Input validation
+
+- Thymeleaf – Server-side templating engine
+
+#### Frontend
+
+- Bootstrap (v5.3.3)
+
 ## Prerequisites Before Running Locally
 
 ### Install the following into your own computer:
