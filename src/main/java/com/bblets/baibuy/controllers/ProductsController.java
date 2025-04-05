@@ -65,7 +65,7 @@ public class ProductsController {
         String imageFileName = createdAt.getTime() + "_" + imageFile.getOriginalFilename();
 
         try {
-            String uploadDir = "public/products/";
+            String uploadDir = "public/uploads/products/";
             Path uploadPath = Paths.get(uploadDir);
 
             if (!Files.exists(uploadPath)) {
@@ -132,7 +132,7 @@ public class ProductsController {
 
             if (!productDto.getImageFile().isEmpty()) {
                 // Delete old image file
-                String uploadDir = "public/products/";
+                String uploadDir = "public/uploads/products/";
                 Path oldImageFilePath = Paths.get(uploadDir + product.getImageFileName());
 
                 try {
@@ -176,7 +176,7 @@ public class ProductsController {
             Product product = productsRepository.findById(id).get();
 
             // Delete image file
-            String uploadDir = "public/products/";
+            String uploadDir = "public/uploads/products/";
             Path imageFilePath = Paths.get(uploadDir + product.getImageFileName());
 
             try {
