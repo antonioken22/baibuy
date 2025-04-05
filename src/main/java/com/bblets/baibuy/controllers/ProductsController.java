@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bblets.baibuy.models.Product;
 import com.bblets.baibuy.models.ProductDto;
-import com.bblets.baibuy.services.ProductsRepository;
+import com.bblets.baibuy.repository.ProductsRepository;
 
 import jakarta.validation.Valid;
 

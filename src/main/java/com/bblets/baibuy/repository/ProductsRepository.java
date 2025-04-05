@@ -1,4 +1,4 @@
-package com.bblets.baibuy.services;
+package com.bblets.baibuy.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
