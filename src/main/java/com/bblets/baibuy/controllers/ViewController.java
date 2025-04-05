@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.bblets.baibuy.models.Product;
 import com.bblets.baibuy.models.UserDto;
 import com.bblets.baibuy.models.User;
-import com.bblets.baibuy.services.ProductsRepository;
+import com.bblets.baibuy.repository.ProductsRepository;
 
 import java.util.LinkedHashSet;
 import java.util.List;

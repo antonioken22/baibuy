@@ -2,7 +2,7 @@ package com.bblets.baibuy.controllers;
 
 import com.bblets.baibuy.models.User;
 import com.bblets.baibuy.models.UserDto;
-import com.bblets.baibuy.services.UserRepository;
+import com.bblets.baibuy.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
