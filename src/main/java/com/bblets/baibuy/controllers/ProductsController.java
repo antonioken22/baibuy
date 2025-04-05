@@ -23,12 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bblets.baibuy.models.Product;
 import com.bblets.baibuy.models.ProductDto;
-<<<<<<< HEAD
+
 import com.bblets.baibuy.models.User;
-import com.bblets.baibuy.services.ProductsRepository;
-=======
 import com.bblets.baibuy.repository.ProductsRepository;
->>>>>>> d10a161064da3587fee899eac54905b02547a644
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
