@@ -23,8 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bblets.baibuy.models.Product;
 import com.bblets.baibuy.models.ProductDto;
+
+import com.bblets.baibuy.models.User;
 import com.bblets.baibuy.repository.ProductsRepository;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -35,7 +38,14 @@ public class ProductsController {
     private ProductsRepository productsRepository;
 
     @GetMapping({ "", "/" })
-    public String showProductList(Model model) {
+    public String showProductList(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null ||
+                !(loggedInUser.getRole() == User.Role.ADMIN || loggedInUser.getRole() == User.Role.SELLER)) {
+            return "redirect:/auth/signin";
+        }
+
         List<Product> products = productsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         model.addAttribute("products", products);
         return "products/index";

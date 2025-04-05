@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - BaiBuy</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" th:href="@{/css/baibuy-theme.css}" />
+</head>
+<body>
+  <div th:replace="dashboard/Navbar :: baiHeader"></div>
+  <div style="padding-top: 80px;"></div>
+
+  <div class="hero-section">
+    <h1>Find Products That Match Your Lifestyle</h1>
+    <p>Browse our diverse range of meticulously curated items.</p>
+    <p>Each one is crafted to meet your everyday needs and reflect your unique style, from fashion and gadgets to home essentials and more.</p>
+    <a href="#products" class="btn">Shop Now</a>
+  </div>
+
+  <div class="container" id="products">
+    <h2 class="section-title">New Arrivals</h2>
+
+    <div class="filter-container mb-4">
+      <label for="categoryFilter">Filter by Category:</label>
+      <select id="categoryFilter" onchange="filterByCategory()">
+        <option value="all">All</option>
+        <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+      </select>
+    </div>
+
+    <div class="row" th:if="${products.size() > 0}" id="productGrid">
+      <div class="col-md-3 mb-4" th:each="product : ${products}" th:attr="data-category=${product.category}">
+        <div class="product-card">
+          <img th:src="@{'/uploads/products/' + ${product.imageFileName}}" alt="Product Image" class="product-img" />
+          <div class="product-info">
+            <h5 th:text="${product.name}"></h5>
+            <p class="mb-1 text-muted" th:text="${product.brand}"></p>
+            <p class="mb-1"><strong>Category:</strong> <span th:text="${product.category}"></span></p>
+            <div class="rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <div>
+              <span class="price">Php <span th:text="${product.price}"></span></span>
+              <span class="original-price" th:if="${product.price < 300}">Php 399</span>
+            </div>
+            <small class="text-muted" th:text="${#dates.format(product.createdAt, 'yyyy-MM-dd')}"></small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div th:if="${products.size() == 0}" class="alert alert-info text-center">
+      No products available at the moment.
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <h2 class="section-title">Top Selling</h2>
+    <div class="row">
+      <div class="col-md-3 mb-4" th:each="product : ${products}" th:if="${product.price < 200}">
+        <div class="product-card">
+          <img th:src="@{'/uploads/products/' + ${product.imageFileName}}" alt="Product Image" class="product-img" />
+          <div class="product-info">
+            <h5 th:text="${product.name}"></h5>
+            <p class="mb-1 text-muted" th:text="${product.brand}"></p>
+            <div class="rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <div>
+              <span class="price">Php <span th:text="${product.price}"></span></span>
+              <span class="original-price">Php 250</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function filterByCategory() {
+      const selected = document.getElementById("categoryFilter").value.toLowerCase();
+      const cards = document.querySelectorAll("#productGrid .col-md-3");
+
+      cards.forEach(card => {
+        const category = card.getAttribute("data-category").toLowerCase();
+        card.style.display = (selected === "all" || category === selected) ? "block" : "none";
+      });
+    }
+  </script>
+</body>
+</html>
