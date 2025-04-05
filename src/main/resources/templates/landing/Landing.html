@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BaiBuy - Fashion E-commerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Sorts+Mill+Goudy&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Satoshi', sans-serif;
+        }
+        h1, h2, h4 {
+            font-family: 'Aclonica', sans-serif;
+        }
+        p, span {
+            font-family: 'Sorts Mill Goudy', serif;
+        }
+       
+    </style>
+    <link rel="stylesheet" th:href="@{/css/baibuy-theme.css}">
+</head>
+<body class="bg-gray-100">
+    
+    <!-- Header -->
+    <header>
+        <div th:replace="components/PromoBanner :: promo-banner"></div>
+
+        
+        <nav class="flex justify-between items-center bg-white p-4 shadow-md">
+            <div class="text-2xl font-bold text-black font-aclonica">BAI BUY</div>
+            <ul class="flex space-x-6 text-black font-light font-medium">
+                <li><a href="#" class="hover:text-purple-600">Shop</a></li>
+                <li><a href="#" class="hover:text-purple-600">On Sale</a></li>
+                <li><a href="#" class="hover:text-purple-600">New Arrivals</a></li>
+                <li><a href="#" class="hover:text-purple-600">Brands</a></li>
+            </ul>
+            <div class="flex items-center space-x-4">
+                <input type="text" placeholder="Search products..." class="border-2 border-black px-3 py-1 rounded-full focus:outline-none">
+                <i class="fas fa-user text-black text-xl cursor-pointer"></i>
+                <i class="fas fa-shopping-cart text-black text-xl cursor-pointer"></i> 
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="flex flex-col md:flex-row items-center justify-between p-8 md:p-16 bg-gray-100" style="background-image: url('/modelLanding.png'); background-size: cover; background-position: center;">
+        <div class="max-w-lg">
+            <h1 class="text-6xl font-bold text-black capitalize">FIND CLOTHES THAT MATCH YOUR STYLE</h1>
+            <p class="text-gray-600 mt-4">Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style..</p>
+            <a class="bg-[#3B1398] text-white px-6 py-3 rounded-full inline-block mt-4 transition hover:bg-black hover:text-white" href="#">
+                Shop Now
+            </a>
+            
+            <div class="flex space-x-6 mt-4 text-6xl text-black font-satoshi font-bold">
+                <span class="break-line">200+</span>
+                <span class="break-line">2,000 </span>
+                <span class="break-line">30,000+</span>
+            </div>
+            <div class="flex space-x-20 mt-4 text-xs text-black font-sorts-mill-goudy font-light">
+                <span>International Brands</span>
+                <span>High-Quality Products</span>
+                <span>Happy Customers</span>  <!-- Margin-left applied here -->
+            </div>
+            
+        </div>
+    </section>
+    
+    <!-- Brand Logos -->
+    <section class="flex flex-wrap justify-center space-x-6 py-8">
+        <img src="/images/versace.png" alt="Versace" class="h-10 opacity-70 hover:opacity-100">
+        <img src="/images/zara.png" alt="Zara" class="h-10 opacity-70 hover:opacity-100">
+        <img src="/images/gucci.png" alt="Gucci" class="h-10 opacity-70 hover:opacity-100">
+        <img src="/images/prada.png" alt="Prada" class="h-10 opacity-70 hover:opacity-100">
+        <img src="/images/calvin.png" alt="Calvin Klein" class="h-10 opacity-70 hover:opacity-100">
+    </section>
+    
+    <!-- New Arrivals -->
+    <section class="py-8">
+        <h2 class="text-3xl text-purple-800 text-center font-bold">New Arrivals</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-8">
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden transform hover:-translate-y-2 transition" th:each="item : ${newArrivals}">
+                <img th:src="@{${item.imageUrl}}" th:alt="${item.name}" class="w-full h-72 object-cover">
+                <div class="p-4">
+                    <h4 class="text-purple-800 text-lg font-semibold" th:text="${item.name}">Product Name</h4>
+                    <p class="text-purple-600 text-xl font-bold">$<span th:text="${item.price}">120</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Top Selling -->
+    <section class="py-8">
+        <h2 class="text-3xl text-purple-800 text-center font-bold">Top Selling</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-8">
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden transform hover:-translate-y-2 transition" th:each="item : ${topSelling}">
+                <img th:src="@{${item.imageUrl}}" th:alt="${item.name}" class="w-full h-72 object-cover">
+                <div class="p-4">
+                    <h4 class="text-purple-800 text-lg font-semibold" th:text="${item.name}">Product Name</h4>
+                    <p class="text-purple-600 text-xl font-bold">$<span th:text="${item.price}">120</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>

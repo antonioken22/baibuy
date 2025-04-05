@@ -25,16 +25,22 @@ public class ViewController {
     private ProductsRepository productsRepository;
 
     @GetMapping("/")
-    public String redirectToSignIn() {
-        return "redirect:/auth/signin";
+    public String redirectToLanding() {
+        return "redirect:/landing/Landing";
     }
 
+    @GetMapping("/landing/Landing")
+    public String landingPage() {
+        return "landing/Landing"; // This ensures /landing is resolved
+    }
+    
     @GetMapping("/auth/signin")
     public String loginPage(Model model) {
         model.addAttribute("userDto", new UserDto());
         return "auth/signin";
     }
 
+    
     @GetMapping("/auth/signup")
     public String registerPage(Model model) {
         model.addAttribute("userDto", new UserDto());
