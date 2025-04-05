@@ -1,0 +1,50 @@
+body {
+    background-color: #f5f5f5;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .form-title {
+    font-family: 'Aclonica', sans-serif;
+    font-size: 2rem;
+    color: #3B1398;
+  }
+  
+  .btn-primary {
+    background-color: #3B1398;
+    border-color: #3B1398;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2a0f75;
+  }
+  
+  .form-control {
+    border-radius: 10px;
+  }
+  
+  .input-group-text {
+    background: white;
+    border-left: none;
+    color: #3B1398;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .text-link {
+    color: #3B1398;
+    text-decoration: none;
+  }
+  
+  .text-link:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .img-fluid-auth {
+      height: 300px !important;
+      object-fit: contain;
+    }
+  }
+  
