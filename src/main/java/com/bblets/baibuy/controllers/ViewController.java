@@ -24,15 +24,15 @@ public class ViewController {
     @Autowired
     private ProductsRepository productsRepository;
 
-   // @GetMapping("/")
-    //public String redirectToLanding() {
-      //  return "redirect:/landing/Landing";
-    //}
+   @GetMapping("/")
+    public String redirectToLanding() {
+       return "redirect:/landing/Landing";
+    }
 
-    //@GetMapping("/landing/Landing")
-    //public String landingPage() {
-      //  return "landing/Landing"; // This ensures /landing is resolved
-    //}
+    @GetMapping("/landing/Landing")
+    public String landingPage() {
+       return "landing/Landing"; // This ensures /landing is resolved
+    }
     
     @GetMapping("/auth/signin")
     public String loginPage(Model model) {
