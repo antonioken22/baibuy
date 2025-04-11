@@ -1,0 +1,49 @@
+<!-- /templates/fragments/promoBanner.html -->
+<div th:fragment="promo-banner">
+    <style>
+        #promo-banner {
+            background-color: #3B1398; /* Tailwind: bg-purple-800 */
+            color: white;
+            text-align: center;
+            padding: 0.5rem 0;
+            position: relative;
+            font-family: 'Satoshi', sans-serif;
+        }
+
+        #promo-banner p {
+            margin: 0;
+        }
+
+        #promo-banner a {
+            text-decoration: underline;
+            color: white;
+        }
+
+        #promo-banner button {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        #promo-banner button:hover {
+            color: #ddd;
+        }
+    </style>
+
+    <div id="promo-banner">
+        <p>
+            Sign up and get 20% off on your first order. 
+            <a href="#">Sign Up Now</a>
+        </p>
+        <button onclick="document.getElementById('promo-banner').style.display='none'">
+            &times;
+        </button>
+    </div>
+</div>

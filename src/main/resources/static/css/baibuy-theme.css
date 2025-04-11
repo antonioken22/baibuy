@@ -133,6 +133,35 @@
     border: 1px solid #ccc;
   }
 
+  .font-aclonica {
+    font-family: 'Aclonica', sans-serif;
+  }
+
+  .font-satoshi {
+    font-family: 'Satoshi', sans-serif;
+  }
+  .font-sorts-mill-goudy {
+    font-family: 'Sorts Mill Goudy', serif;
+  }
+
+  
+.break-line {
+  display: inline-block;
+  position: relative;
+  padding-right: 20px; /* Optional: Adjust for spacing */
+}
+
+.break-line:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px; /* Line thickness */
+  height: 20px; /* Line height */
+  background-color: purple; /* Adjust to your preferred color */
+}
+
   @media (max-width: 768px) {
     .img-fluid-auth {
       height: 300px !important;
