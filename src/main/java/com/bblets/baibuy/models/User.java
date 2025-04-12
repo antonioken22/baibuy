@@ -50,8 +50,7 @@ public class User {
     private List<Integer> reportIds;
 
     public enum Role {
-        USER,
-        SELLER,
-        ADMIN
+        User,
+        Admin
     }
 }

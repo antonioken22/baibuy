@@ -42,7 +42,7 @@ public class ProductsController {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser == null ||
-                !(loggedInUser.getRole() == User.Role.ADMIN || loggedInUser.getRole() == User.Role.SELLER)) {
+                !(loggedInUser.getRole() == User.Role.Admin)) {
             return "redirect:/auth/signin";
         }
 
