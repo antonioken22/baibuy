@@ -32,8 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
-# .env.properties
-.env.properties
-
 # public (server uploads)
 public/uploads
