@@ -169,3 +169,34 @@
     }
   }
   
+  /* Smooth transitions for sidebar */
+#mobile-sidebar {
+  transition: left 0.3s ease-in-out;
+}
+
+/* Mobile menu item hover states */
+#mobile-sidebar a:hover {
+  background-color: #f3f4f6;
+}
+
+/* Prevent body scroll when sidebar is open */
+body.sidebar-open {
+  z-index: 1000;
+}
+/* Custom background positioning */
+@media (min-width: 768px) {
+  .hero-bg {
+    background-position: 90% center;
+  }
+}
+
+/* Touch optimization */
+@media (max-width: 767px) {
+  .hero-section {
+    min-height: 60vh;
+  }
+  .hero-content {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}

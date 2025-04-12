@@ -143,46 +143,33 @@ nav {
   position: relative;
 }
 
-.brand-logos-container {
-    width: 100%;
-    padding: 0 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #3B1398; /* Background color */
-}
-
 .brand-logos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 200px; /* Adjusted gap for more reasonable spacing */
-    padding: 32px 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    gap: 1rem;
+    padding: 1.5rem 0;
 }
 
-/* Continuous animation for logo fade-in and subtle movement */
-@keyframes fadeInUp {
-    0% {
-        opacity: 0.5;
-        transform: translateY(10px);
+@media (min-width: 640px) {
+    .brand-logos {
+        gap: 4rem;
     }
-    50% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0.5;
-        transform: translateY(10px);
+}
+
+@media (min-width: 1024px) {
+    .brand-logos {
+        gap: 8rem;
     }
 }
 
 .brand-logo {
-    height: 80px;
-    max-width: 160px;
-    animation: fadeInUp 3s ease-in-out infinite; /* Infinite loop with gentle animation */
-    animation-delay: 0s;
+    height: 40px;
+    max-width: 100px;
+}
+
+@media (min-width: 768px) {
+    .brand-logo {
+        height: 60px;
+        max-width: 120px;
+    }
 }
 
 .brand-logo:nth-child(1) {
@@ -245,3 +232,21 @@ nav {
 #promo-banner button:hover {
     color: #ddd;
 }
+
+/* Custom background positioning */
+@media (min-width: 768px) {
+    .hero-bg {
+      background-position: 90% center;
+    }
+  }
+  
+  /* Touch optimization */
+  @media (max-width: 767px) {
+    .hero-section {
+      min-height: 60vh;
+    }
+    .hero-content {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+  }

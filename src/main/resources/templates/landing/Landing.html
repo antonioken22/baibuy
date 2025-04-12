@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <!-- Add preconnect for external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <title>BaiBuy - Fashion E-commerce</title>
+  <!-- Add meta tags for mobile optimization -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- Compressed Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- Font Awesome with subset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+  <!-- Fonts with display=swap -->
   <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Sorts+Mill+Goudy&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Local CSS -->
   <link th:href="@{/css/baibuy-theme.css}" rel="stylesheet">
   <link th:href="@{/css/landing.css}" rel="stylesheet">
-
 </head>
 
 <body class="bg-[#3B1398] bg-opacity-10">
 
-  <!-- Promo Banner -->
+  <!-- Promo Banner with mobile adjustments -->
   <header>
     <div th:replace="components/PromoBanner :: promo-banner"></div>
      
-    <!-- Navbar -->
-    <nav class="flex justify-between items-center bg-white font-sorts-mill-goudy font-semibold px-6 sm:px-12 py-4 shadow-md">
-      <div class="text-4xl font-bold text-black font-aclonica">BAI BUY</div>
+    <!-- Desktop Navbar -->
+    <nav class="hidden md:flex justify-between items-center bg-white px-4 sm:px-6 py-3">
+      <div class="w-full flex justify-between items-center md:w-auto">
+        <div class="text-3xl md:text-4xl font-aclonica">BAI BUY</div>
+      </div>
   
-      <ul class="hidden gap-x-10 md:flex space-x-6 text-black font-medium">
+      <ul class="flex gap-x-16 w-full md:w-auto mt-4 md:mt-0">
           <!-- Shop with Dropdown -->
-          <li class="relative group" onclick="toggleDropdown(event)">
+          <li class="relative group">
               <a href="#" class="dropdown-toggle hover:text-purple-600 text-xl">Shop</a>
               <div class="dropdown-menu">
                   <a href="#" class="block">New</a>
@@ -36,82 +47,145 @@
           <li><a href="#" class="hover:text-purple-600 text-xl">Brands</a></li>
       </ul>
   
-      <div class="flex items-center space-x-4">
-          <input type="text" placeholder="Search products..." class="border border-black px-3 py-1 rounded-full w-28 sm:w-48 lg:w-64">
-          <i class="fas fa-user text-black text-xl cursor-pointer"></i>
-          <i class="fas fa-shopping-cart text-black text-xl cursor-pointer"></i>
+      <div class="flex items-center gap-3">
+        <input class="w-48">
+        <i class="fas fa-user text-black text-xl cursor-pointer"></i>
+        <i class="fas fa-shopping-cart text-black text-xl cursor-pointer"></i>
   
-          <!-- Auth Buttons -->
-          <a href="/auth/signin" class="text-[#3B1398] border border-[#3B1398] bg-white hover:bg-[#3B1398]/20 px-4 py-1.5 rounded-lg text-sm sm:text-base font-aclonica transition duration-200">
+        <!-- Auth Buttons -->
+        <a href="/auth/signin" class="text-[#3B1398] border border-[#3B1398] bg-white hover:bg-[#3B1398]/20 px-4 py-1.5 rounded-lg text-sm sm:text-base font-aclonica transition duration-200">
             Sign In
         </a>
         <a href="/auth/signup" class="bg-[#3B1398] text-white hover:bg-[#2c0e72] px-4 py-1.5 rounded-lg text-sm sm:text-base font-aclonica shadow-sm transition duration-200">
             Sign Up
         </a>
       </div>
-  </nav>
-  
-    
+    </nav>
+
+    <!-- Mobile Navbar -->
+    <nav class="md:hidden flex justify-between items-center bg-white px-4 py-3 sticky top-0 z-40 shadow-sm">
+      <div class="text-2xl font-aclonica">BAI BUY</div>
+      <button id="mobile-menu-button" class="text-2xl p-3" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
   </header>
     
-  <!-- Hero Section -->
-  <section class="relative w-full h-screen">
-    <!-- Background Image -->
-    <div 
-      class="absolute inset-0 bg-cover bg-center z-0"
-      style="background-image: url('/modelLanding.png');">
+   <!-- Mobile Sidebar -->
+   <div id="mobile-sidebar" class="fixed inset-y-0 left-[-100%] w-64 bg-white shadow-xl z-50 transition-all duration-300">
+    <div class="flex justify-between items-center p-4 border-b">
+      <div class="text-lg font-aclonica">BAI BUY</div>
+      <button id="close-sidebar" class="text-xl p-3" aria-label="Close menu">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
     
-    <!-- Content -->
-    <div class="relative z-10 px-8 md:px-16 py-12 flex items-center h-full">
-      <div class="max-w-xl text-white drop-shadow-lg">
-        <h1 class="text-5xl md:text-6xl font-bold capitalize text-black">Basta Buy na Bai! Ayg Dugay!</h1>
-        <p class="text-gray-700 mt-4">
-          Pangitaa ang mga sulit finds sa BuyBai, where great deals are just a click away. Buy, sell, and enjoy the best bargains, Bai!
+    <ul class="space-y-1 p-3">
+      <li>
+        <details class="group">
+          <summary class="flex items-center p-3 hover:bg-gray-100 rounded-lg cursor-pointer">
+            Shop <i class="fas fa-chevron-down ml-2 text-sm group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <ul class="pl-4 mt-1 space-y-1">
+            <li><a href="#" class="block p-2 text-sm hover:bg-gray-100 rounded">New</a></li>
+            <li><a href="#" class="block p-2 text-sm hover:bg-gray-100 rounded">Used</a></li>
+            <li><a href="#" class="block p-2 text-sm hover:bg-gray-100 rounded">Refurbished</a></li>
+          </ul>
+        </details>
+      </li>
+      <li><a href="#" class="block p-3 hover:bg-gray-100 rounded-lg">On Sale</a></li>
+      <li><a href="#" class="block p-3 hover:bg-gray-100 rounded-lg">New Arrivals</a></li>
+      <li><a href="#" class="block p-3 hover:bg-gray-100 rounded-lg">Brands</a></li>
+      <li class="mt-4 space-y-2">
+        <a href="/auth/signin" class="block w-full text-center bg-[#3B1398] text-white p-3 rounded-lg active:scale-95 transition-transform">
+          Sign In
+        </a>
+        <a href="/auth/signup" class="block w-full text-center border-2 border-[#3B1398] text-[#3B1398] p-3 rounded-lg active:scale-95 transition-transform">
+          Sign Up
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Hero Section with mobile optimizations -->
+  <!-- Hero Section -->
+<section class="relative min-h-[50vh] md:h-screen">
+  <!-- Background Image with responsive positioning -->
+  <div class="absolute inset-0 bg-cover bg-center md:bg-[position:90%_center] bg-no-repeat"
+       style="background-image: url('/BG2.jpg');"
+       loading="lazy">
+  </div>
+
+  <!-- Content Container -->
+  <div class="relative z-10 h-full flex items-center">
+    <div class="px-4 md:px-16 py-12 w-full max-w-2xl">
+      <div class="text-center md:text-left">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-tight">
+          Basta Buy na Bai! Ayg Dugay!
+        </h1>
+        
+        <p class="text-gray-700 mt-4 md:mt-6 text-base md:text-lg lg:text-xl">
+          Pangitaa ang mga sulit finds sa BuyBai, where great deals are just a click away.
         </p>
-        <a href="/dashboard" class="bg-[#3B1398] text-white px-6 py-3 rounded-full inline-block mt-6 transition hover:bg-black">
+        
+        <a href="/dashboard" 
+           class="inline-block bg-[#3B1398] text-white px-6 py-3 md:px-8 md:py-4 rounded-full mt-6 
+                  active:scale-95 transition-transform text-sm md:text-base hover:bg-[#2c0e72]">
           Buy Now!
         </a>
-  
-        <!-- Stats -->
-        <div class="flex flex-wrap gap-24 mt-8 text-3xl sm:text-4xl text-black font-satoshi font-bold">
-          <span class="break-line">200+</span>
-          <span class="break-line">2,000</span>
-          <span class="break-line">30,000+</span>
-        </div>
-        <div class="flex flex-wrap gap-x-10 gap-y-2 mt-2 text-sm text-black font-sorts-mill-goudy font-light">
-          <span class="mr-16">Brands</span>
-          <span class="mr-16">High-Quality Products</span>
-          <span>Malipayong mga Bai</span>
+
+        <!-- Responsive Stats -->
+        <div class="mt-8 md:mt-12 font-satoshi">
+          <div class="grid grid-cols-2 gap-4 md:flex md:gap-8 lg:gap-12">
+            <div class="text-center md:text-left">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold">200+</div>
+              <div class="text-xs md:text-sm lg:text-base">Brands</div>
+            </div>
+            <div class="text-center md:text-left">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold">2,000</div>
+              <div class="text-xs md:text-sm lg:text-base">Products</div>
+            </div>
+            <div class="col-span-2 md:col-auto text-center md:text-left">
+              <div class="text-2xl md:text-3xl lg:text-4xl font-bold">30k+</div>
+              <div class="text-xs md:text-sm lg:text-base">Customers</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- Brand Logos -->
   <div th:replace="components/BrandLogos :: brand-logos"></div>
-
   <div th:replace="components/ProductArrivalAndTopselling :: product-promo-banner"></div>
   <div th:replace="components/Footer :: landing-footer"></div>
 
-
-
-
-  
   <script>
-    function toggleDropdown(event) {
-      // Prevent the default anchor link behavior
-      event.preventDefault();
-      
-      // Get the dropdown menu and toggle active class
-      const dropdownMenu = event.target.nextElementSibling;
-      const toggleLink = event.target;
-      
-      // Toggle the 'active' class to show or hide the dropdown and rotate the arrow
-      dropdownMenu.classList.toggle('active');
-      toggleLink.classList.toggle('active');
-    }
-  </script>
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+       const sidebar = document.getElementById('mobile-sidebar');
+       const overlay = document.getElementById('sidebar-overlay');
+       const closeButton = document.getElementById('close-sidebar');
+   
+       function toggleSidebar() {
+         sidebar.classList.toggle('left-[-100%]');
+         sidebar.classList.toggle('left-0');
+         overlay.classList.toggle('hidden');
+       }
+   
+       mobileMenuButton.addEventListener('click', toggleSidebar);
+       closeButton.addEventListener('click', toggleSidebar);
+       overlay.addEventListener('click', toggleSidebar);
+   
+       // Close sidebar on resize to desktop
+       window.addEventListener('resize', () => {
+         if (window.innerWidth >= 768) {
+           sidebar.classList.add('left-[-100%]');
+           sidebar.classList.remove('left-0');
+           overlay.classList.add('hidden');
+         }
+       });
+     </script>
 
 </body>
 </html>
