@@ -19,7 +19,7 @@ By Team BBLets
 
 - Bootstrap 5.3.3 – CSS and UI layout framework (used in Thymeleaf templates)
 
-#### Developer Tools 
+#### Developer Tools
 
 - Spring Boot DevTools – Hot reload and dev experience
 - Lombok – Cleaner, boilerplate-free Java code (auto-generates getters, setters, etc.)
@@ -47,20 +47,10 @@ By Team BBLets
 
 2. Open and run a MySQL Instance in your MySQL Workbench locally, then add a database and name it `baibuy`.
 
-3. Fill in all the necessary variables in the `application.properties`
+3. Create a copy of `.env.properties.template` in the same directory and rename the copy to `.env.properties`. Then fill all the required fields.
 
-## application.properties
-
-```properties
-spring.application.name=baibuy
-
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.datasource.url=jdbc:mysql://localhost:3306/baibuy
-spring.datasource.username=root
-spring.datasource.password=
-
-spring.jpa.show-sql=true
-spring.jpa.hibernate.ddl-auto=update
+```shell
+   cp .env.properties.template .env.properties
 ```
 
 4. Run your web app at `http://localhost:8080` by using the Spring Boot Dashboard extension in your VSCode.
