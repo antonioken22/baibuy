@@ -39,7 +39,7 @@ public class AuthController {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setImageUrl(userDto.getImageUrl());
-        user.setRole(User.Role.USER);
+        user.setRole(User.Role.User);
         user.setCreatedAt(new Date());
 
         userRepository.save(user);
@@ -69,7 +69,7 @@ public class AuthController {
 
         session.setAttribute("loggedInUser", user);
 
-        if (user.getRole() == User.Role.ADMIN || user.getRole() == User.Role.SELLER) {
+        if (user.getRole() == User.Role.Admin) {
             return "redirect:/products";
         } else {
             return "redirect:/dashboard";

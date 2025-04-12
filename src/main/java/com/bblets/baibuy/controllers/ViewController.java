@@ -24,36 +24,33 @@ public class ViewController {
     @Autowired
     private ProductsRepository productsRepository;
 
-   @GetMapping("/")
+    @GetMapping("/")
     public String redirectToLanding() {
-       return "redirect:/landing/Landing";
+        return "redirect:/landing/Landing";
     }
 
     @GetMapping("/landing/Landing")
     public String landingPage() {
-       return "landing/Landing"; // This ensures /landing is resolved
+        return "landing/Landing"; // This ensures /landing is resolved
     }
-    
+
     @GetMapping("/auth/signin")
     public String loginPage(Model model) {
         model.addAttribute("userDto", new UserDto());
         return "auth/signin";
     }
 
-    
     @GetMapping("/auth/signup")
     public String registerPage(Model model) {
         model.addAttribute("userDto", new UserDto());
         return "auth/signup";
     }
-    
-    
 
     @GetMapping("/dashboard")
     public String userDashboard(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
-        if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
+        if (loggedInUser == null || loggedInUser.getRole() != User.Role.User) {
             return "redirect:/auth/signin";
         }
 
@@ -68,14 +65,14 @@ public class ViewController {
 
         return "dashboard/UserDashboard";
     }
-    
+
     @GetMapping("/profile")
-public String profilePage(Model model, HttpSession session) {
-    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    public String profilePage(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
 
-    // Optional user info (in case you want to show name/email)
-    model.addAttribute("user", loggedInUser);
+        // Optional user info (in case you want to show name/email)
+        model.addAttribute("user", loggedInUser);
 
-    return "Profile/profile"; // Match the folder and file name exactly
-}
+        return "Profile/profile"; // Match the folder and file name exactly
+    }
 }
