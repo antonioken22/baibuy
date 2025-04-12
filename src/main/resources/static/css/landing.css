@@ -1,0 +1,247 @@
+body {
+    font-family: 'Satoshi', sans-serif;
+  }
+  h1, h2, h4 {
+    font-family: 'Aclonica', sans-serif;
+  }
+  p, span {
+    font-family: 'Sorts Mill Goudy', serif;
+  }
+  .brand-logos-container {
+  width: 100%;
+  padding: 0 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3B1398; /* Background color */
+}
+
+.brand-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 200px; /* Increased gap between the logos */
+  padding: 32px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation for logo fade-in and move-up effect */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.brand-logo {
+  height: 80px;
+  max-width: 160px;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: 0s;
+}
+
+.brand-logo:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.brand-logo:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.brand-logo:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.brand-logo:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.brand-logo:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.brand-logo:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Ensuring dropdown is above the background image */
+.group:hover .absolute {
+  z-index: 10; /* Make sure the dropdown is on top of the background image */
+}
+
+/* Hide the dropdown by default */
+.dropdown-menu {
+  display: none;
+  z-index: 10; /* Ensure the dropdown is above other elements */
+  position: absolute;
+  left: 0; /* Align the dropdown with the left edge of the parent */
+  top: 100%;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  min-width: 180px;
+}
+
+/* Show dropdown when active */
+.dropdown-menu.active {
+  display: block;
+}
+
+/* Arrow Indicator next to "Shop" */
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  transition: color 0.2s ease;
+}
+
+.dropdown-toggle::after {
+  content: '▼';
+  margin-left: 8px;
+  font-size: 14px;
+  color: #6b7280; /* Default color */
+  transition: transform 0.2s ease;
+}
+
+.dropdown-toggle.active::after {
+  transform: rotate(180deg); /* Rotate the arrow when active */
+}
+
+/* Make sure the navbar has a higher z-index than the background */
+nav {
+  position: relative;
+  z-index: 20;
+  font-family: 'Sorts Mill Goudy', serif;
+}
+
+/* Dropdown Link Styling */
+.dropdown-menu a {
+  padding: 8px 16px;
+  display: block;
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f3f4f6;
+}
+
+/* Ensure the dropdown aligns with the edge of the Shop menu */
+.relative {
+  position: relative;
+}
+
+.brand-logos-container {
+    width: 100%;
+    padding: 0 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3B1398; /* Background color */
+}
+
+.brand-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 200px; /* Adjusted gap for more reasonable spacing */
+    padding: 32px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Continuous animation for logo fade-in and subtle movement */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0.5;
+        transform: translateY(10px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0.5;
+        transform: translateY(10px);
+    }
+}
+
+.brand-logo {
+    height: 80px;
+    max-width: 160px;
+    animation: fadeInUp 3s ease-in-out infinite; /* Infinite loop with gentle animation */
+    animation-delay: 0s;
+}
+
+.brand-logo:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.brand-logo:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.brand-logo:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.brand-logo:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.brand-logo:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.brand-logo:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+#promo-banner {
+    background-color: #3B1398; /* Tailwind: bg-purple-800 */
+    color: white;
+    text-align: center;
+    padding: 0.5rem 0;
+    position: relative;
+    font-family: 'Satoshi', sans-serif;
+}
+
+#promo-banner p {
+    margin: 0;
+}
+
+#promo-banner a {
+    text-decoration: underline;
+    color: white;
+}
+
+#promo-banner button {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#promo-banner button:hover {
+    color: #ddd;
+}

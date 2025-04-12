@@ -24,14 +24,9 @@ public class ViewController {
     @Autowired
     private ProductsRepository productsRepository;
 
-   @GetMapping("/")
-    public String redirectToLanding() {
-       return "redirect:/landing/Landing";
-    }
-
-    @GetMapping("/landing/Landing")
+    @GetMapping("/")
     public String landingPage() {
-       return "landing/Landing"; // This ensures /landing is resolved
+        return "landing/Landing"; // This loads the landing page template directly at root
     }
     
     @GetMapping("/auth/signin")
