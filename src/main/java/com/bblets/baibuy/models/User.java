@@ -2,8 +2,9 @@ package com.bblets.baibuy.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Date;
 import java.util.List;
+
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "users")
@@ -11,10 +12,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+@SQLRestriction("deleted_at IS NULL")
+public class User extends AuditableFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -28,29 +30,22 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
+    @Column(nullable = true)
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
-    // Audit Fields
-    private Date createdAt;
-    private String createdBy;
-    private Date updatedAt;
-    private Integer updatedBy;
-    private Date deletedAt;
-    private Integer deletedBy;
-    private boolean isBlocked;
-    private Date blockedAt;
-    private Integer blockedBy;
-
     // Report handling – for future feature
     @ElementCollection
+    @CollectionTable(name = "user_report_ids", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "report_id")
     private List<Integer> reportIds;
 
+    // Enums
     public enum Role {
-        User,
-        Admin
+        USER,
+        ADMIN
     }
 }

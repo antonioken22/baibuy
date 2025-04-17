@@ -1,11 +1,13 @@
 spring.application.name=baibuy
 
+# Required
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/baibuy
 spring.datasource.username=root
-spring.datasource.password=agnusdei
+spring.datasource.password=
 
 spring.jpa.show-sql=true
 spring.jpa.hibernate.ddl-auto=update
 
+# Optional
 logging.level.org.springframework.security=DEBUG
