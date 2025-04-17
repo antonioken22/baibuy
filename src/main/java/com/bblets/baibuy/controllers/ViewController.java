@@ -31,7 +31,7 @@ public class ViewController {
 
     @GetMapping("/landing/Landing")
     public String landingPage() {
-        return "landing/Landing"; // This ensures /landing is resolved
+        return "landing/Landing";
     }
 
     @GetMapping("/auth/signin")
@@ -50,7 +50,7 @@ public class ViewController {
     public String userDashboard(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
-        if (loggedInUser == null || loggedInUser.getRole() != User.Role.User) {
+        if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
             return "redirect:/auth/signin";
         }
 
@@ -70,9 +70,8 @@ public class ViewController {
     public String profilePage(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
-        // Optional user info (in case you want to show name/email)
         model.addAttribute("user", loggedInUser);
 
-        return "Profile/profile"; // Match the folder and file name exactly
+        return "Profile/profile";
     }
 }

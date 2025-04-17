@@ -9,9 +9,12 @@ By Team BBLets
 - Java 17 – Programming language
 - Spring Boot 3.4.4 – Main Java framework
 - Spring Web – REST API and controller layer
+- Spring Security – Authentication and authorization
 - Spring Data JPA – ORM layer for MySQL
+- Hibernate – JPA implementation (via Spring Data JPA)
 - Spring Validation – Form and DTO validation
 - Thymeleaf – Server-side templating engine
+- Thymeleaf Extras (Spring Security 6) – Thymeleaf integration with Spring Security
 - MySQL 8.0.41 – Relational database
 - JDBC (MySQL Connector/J) – Database driver for MySQL
 
@@ -22,8 +25,8 @@ By Team BBLets
 #### Developer Tools
 
 - Spring Boot DevTools – Hot reload and dev experience
-- Lombok – Cleaner, boilerplate-free Java code (auto-generates getters, setters, etc.)
-- Spring Boot Test Starter – Unit and integration testing tools
+- Lombok – Cleaner, boilerplate-free Java code
+- Spring Boot Test Starter – Base for testing
 
 ## Prerequisites Before Running Locally
 
@@ -47,11 +50,7 @@ By Team BBLets
 
 2. Open and run a MySQL Instance in your MySQL Workbench locally, then add a database and name it `baibuy`.
 
-3. Create a copy of `.env.properties.template` in the same directory and rename the copy to `.env.properties`. Then fill all the required fields.
-
-```shell
-   cp .env.properties.template .env.properties
-```
+3. Create a copy of `application.properties.template` in the same directory and rename the copy to `application.properties`. Then fill all the required fields.
 
 4. Run your web app at `http://localhost:8080` by using the Spring Boot Dashboard extension in your VSCode.
 
