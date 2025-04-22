@@ -70,7 +70,7 @@ public class ViewController {
 
      model.addAttribute("user", loggedInUser); // So the view can use it
 
-        return "Profile/prof"; // This points to /templates/Profile/prof.html
+        return "profile/prof"; // This points to /templates/Profile/prof.html
     }
   @GetMapping("/profile/address")
     public String showAddressPage() {
