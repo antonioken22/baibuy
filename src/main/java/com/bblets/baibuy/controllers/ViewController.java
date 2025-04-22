@@ -60,4 +60,23 @@ public class ViewController {
 
         return "dashboard/UserDashboard";
     }
+    @GetMapping("/profile")
+        public String userProfile(HttpSession session, Model model) {
+     User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+      if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
+         return "redirect:/auth/signin";
+    }
+
+     model.addAttribute("user", loggedInUser); // So the view can use it
+
+        return "Profile/prof"; // This points to /templates/Profile/prof.html
+    }
+  @GetMapping("/profile/address")
+    public String showAddressPage() {
+        return "profile/address"; // No .html extension, and path is relative to templates/
+    }
+    
+
+
 }
