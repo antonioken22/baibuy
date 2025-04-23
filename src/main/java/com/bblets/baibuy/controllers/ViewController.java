@@ -68,6 +68,7 @@ public class ViewController {
          return "redirect:/auth/signin";
     }
 
+<<<<<<< Updated upstream
      model.addAttribute("user", loggedInUser); // So the view can use it
 
         return "profile/prof"; // This points to /templates/Profile/prof.html
@@ -79,4 +80,18 @@ public class ViewController {
     
 
 
+=======
+    @GetMapping("/password")
+    public String passwordPage(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    
+    if (loggedInUser == null) {
+        return "redirect:/login"; // Redirect if not logged in
+    }
+    
+    // Add user details + timestamps (mock for demo)
+    model.addAttribute("user", loggedInUser);
+    return "Profile/password"; // Path to Thymeleaf template
+    }
+>>>>>>> Stashed changes
 }
