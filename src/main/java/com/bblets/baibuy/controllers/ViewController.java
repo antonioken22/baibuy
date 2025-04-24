@@ -99,6 +99,17 @@ public String showPrivacyPage(HttpSession session, Model model) {
     model.addAttribute("user", loggedInUser);
     return "profile/privacy"; // maps to templates/Profile/privacy.html
 }
+@GetMapping("/profile/password")
+public String showPasswordPage(HttpSession session, Model model) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+    if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
+        return "redirect:/auth/signin";
+    }
+
+    model.addAttribute("user", loggedInUser);
+    return "profile/password";           //   ↖─‑‑ name of the template (no .html)
+}
     
 
 
