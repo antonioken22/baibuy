@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -19,29 +21,41 @@ public class SecurityConfig {
         }
 
         @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+                return config.getAuthenticationManager();
+        }
+
+        @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .authorizeHttpRequests(authorize -> authorize
-                                                // Allow access to static resources
+                                                // Public static assets
                                                 .requestMatchers("/css/**", "/js/**", "/images/**", "/uploads/**",
                                                                 "/libs/**", "/vendor/**", "/Girl.png", "/landing/**",
                                                                 "/brandlogos/**")
                                                 .permitAll()
-                                                // Allow access to public pages
+
+                                                // Public pages
                                                 .requestMatchers("/", "/landing/Landing", "/auth/signin").permitAll()
-                                                // *** Explicitly allow POST requests to /auth/signup ***
                                                 .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
-                                                // *** Explicitly allow GET requests to /auth/signup ***
                                                 .requestMatchers(HttpMethod.GET, "/auth/signup").permitAll()
-                                                // Allow access to the product listing for everyone
-                                                // Require authentication for other pages
+
+                                                // Authenticated pages
+                                                .requestMatchers("/dashboard/**", "/profile/**").authenticated()
+                                                .requestMatchers("/products/create/**", "/products/edit/**",
+                                                                "/products/delete/**")
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.POST, "/api/messages/send").authenticated()
+
+                                                // Everything else
                                                 .anyRequest().authenticated())
+
                                 .formLogin(form -> form
                                                 .loginPage("/auth/signin")
                                                 .loginProcessingUrl("/auth/signin")
                                                 .usernameParameter("email")
                                                 .passwordParameter("password")
-                                                .defaultSuccessUrl("/products", true)
+                                                .defaultSuccessUrl("/dashboard", true)
                                                 .failureUrl("/auth/signin?error=true")
                                                 .permitAll())
                                 .logout(logout -> logout

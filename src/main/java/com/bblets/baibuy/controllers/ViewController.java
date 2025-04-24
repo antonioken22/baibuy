@@ -3,18 +3,24 @@ package com.bblets.baibuy.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.bblets.baibuy.security.AuthUserDetails;
 
 import com.bblets.baibuy.models.Product;
 import com.bblets.baibuy.models.UserDto;
 import com.bblets.baibuy.models.User;
 import com.bblets.baibuy.repository.ProductsRepository;
+import com.bblets.baibuy.repository.UserRepository;
 
+import java.security.Principal;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Set;
+import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -23,6 +29,9 @@ public class ViewController {
 
     @Autowired
     private ProductsRepository productsRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     public String redirectToLanding() {
@@ -47,10 +56,8 @@ public class ViewController {
     }
 
     @GetMapping("/dashboard")
-    public String userDashboard(Model model, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-        if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
+    public String userDashboard(Model model, @AuthenticationPrincipal AuthUserDetails authUser) {
+        if (authUser == null) {
             return "redirect:/auth/signin";
         }
 
@@ -74,4 +81,31 @@ public class ViewController {
 
         return "Profile/profile";
     }
+
+    @GetMapping("/products/{id}")
+    public String showProductDetails(@PathVariable Integer id, Model model, Principal principal) {
+        Product product = productsRepository.findById(id).orElseThrow();
+
+        String createdByName = null;
+        Optional<User> creator = Optional.empty();
+        if (product.getCreatedBy() != null) {
+            creator = userRepository.findById(product.getCreatedBy());
+            if (creator.isPresent()) {
+                createdByName = creator.get().getFirstName() + " " + creator.get().getLastName();
+            }
+        }
+
+        model.addAttribute("product", product);
+        model.addAttribute("createdByFullName", createdByName);
+        model.addAttribute("canEdit", principal != null
+                && creator.isPresent()
+                && creator.get().getEmail().equals(principal.getName()));
+
+        if (principal != null && creator.isPresent() && creator.get().getEmail().equals(principal.getName())) {
+            model.addAttribute("canEdit", true);
+        }
+
+        return "products/ShowProductDetails";
+    }
+
 }

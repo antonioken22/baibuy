@@ -5,17 +5,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Sort;
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface ProductsRepository extends JpaRepository<Product, Integer> {
 
-    Page<Product> findByCreatedBy(Integer userId, Pageable pageable);
+        Page<Product> findByCreatedBy(Integer userId, Pageable pageable);
 
-    Optional<Product> findByIdAndCreatedBy(Integer id, Integer userId);
+        Optional<Product> findByIdAndCreatedBy(Integer id, Integer userId);
 
-    Page<Product> findAllByIsListedTrueAndIsBlockedFalse(Pageable pageable);
+        Page<Product> findAllByIsListedTrueAndIsBlockedFalse(Pageable pageable);
 
-    Page<Product> findByIsBlockedTrue(Pageable pageable);
+        Page<Product> findByIsBlockedTrue(Pageable pageable);
+
+        List<Product> findByIsListedTrue(Sort sort);
+
 }
