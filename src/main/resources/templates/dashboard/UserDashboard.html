@@ -23,9 +23,18 @@
     <a href="#products" class="btn">Shop Now</a>
   </div>
 
-  <div class="container" id="products">
-    <h2 class="section-title">New Arrivals</h2>
+  <!-- Sell or View Product Buttons -->
+  <div class="container my-4 d-flex gap-3 justify-content-center">
+    <a href="/products" class="btn btn-primary">
+      <i class="fas fa-store"></i> Browse Products
+    </a>
+    <a href="/products/create" class="btn btn-primary">
+      <i class="fas fa-plus-circle"></i> Sell Your Product
+    </a>
+  </div>
 
+
+  <div class="container" id="products">
     <div class="filter-container mb-4">
       <label for="categoryFilter">Filter by Category:</label>
       <select id="categoryFilter" onchange="filterByCategory()">
@@ -33,30 +42,31 @@
         <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
       </select>
     </div>
-
+    <h2 class="section-title">Today's Picks</h2>
     <div class="row" th:if="${products.size() > 0}" id="productGrid">
       <div class="col-md-3 mb-4" th:each="product : ${products}" th:attr="data-category=${product.category}">
-        <div class="product-card">
-          <img th:src="@{'/uploads/products/' + ${product.imageFileName}}" alt="Product Image" class="product-img" />
-          <div class="product-info">
-            <h5 th:text="${product.name}"></h5>
-            <p class="mb-1 text-muted" th:text="${product.brand}"></p>
-            <p class="mb-1"><strong>Category:</strong> <span th:text="${product.category}"></span></p>
-            <div class="rating">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star-half-alt"></i>
-              <i class="far fa-star"></i>
+        <a th:href="@{'/products/' + ${product.id}}" style="text-decoration: none; color: inherit;">
+          <div class="product-card">
+            <img th:src="${#lists.isEmpty(product.imageUrls)} ? '/images/placeholder.jpg' : @{${product.imageUrls[0]}}" alt="Product Image" class="product-img" />
+            <div class="product-info">
+              <h5 th:text="${product.name}"></h5>
+              <p class="mb-1 text-muted" th:text="${product.brand}"></p>
+              <p class="mb-1"><strong>Category:</strong> <span th:text="${product.category}"></span></p>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+              </div>
+              <div>
+                <span class="price">Php <span th:text="${product.price}"></span></span>
+              </div>
+              <small class="text-muted" th:text="${#temporals.format(product.createdAt, 'MMM dd, yyyy h:mm a')}"></small>
             </div>
-            <div>
-              <span class="price">Php <span th:text="${product.price}"></span></span>
-              <span class="original-price" th:if="${product.price < 300}">Php 399</span>
-            </div>
-            <small class="text-muted" th:text="${#dates.format(product.createdAt, 'yyyy-MM-dd')}"></small>
           </div>
-        </div>
-      </div>
+        </a>
+      </div>      
     </div>
 
     <div th:if="${products.size() == 0}" class="alert alert-info text-center">
@@ -68,24 +78,24 @@
     <h2 class="section-title">Top Selling</h2>
     <div class="row">
       <div class="col-md-3 mb-4" th:each="product : ${products}" th:if="${product.price < 200}">
-        <div class="product-card">
-          <img th:src="@{'/uploads/products/' + ${product.imageFileName}}" alt="Product Image" class="product-img" />
-          <div class="product-info">
-            <h5 th:text="${product.name}"></h5>
-            <p class="mb-1 text-muted" th:text="${product.brand}"></p>
-            <div class="rating">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star-half-alt"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <div>
+        <a th:href="@{'/products/' + ${product.id}}" style="text-decoration: none; color: inherit;">
+          <div class="product-card">
+            <img th:src="${#lists.isEmpty(product.imageUrls)} ? '/images/placeholder.jpg' : @{${product.imageUrls[0]}}" alt="Product Image" class="product-img" />
+            <div class="product-info">
+              <h5 th:text="${product.name}"></h5>
+              <p class="mb-1 text-muted" th:text="${product.brand}"></p>
+              <p class="mb-1"><strong>Category:</strong> <span th:text="${product.category}"></span></p>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <i class="far fa-star"></i>
+              </div>
               <span class="price">Php <span th:text="${product.price}"></span></span>
-              <span class="original-price">Php 250</span>
             </div>
           </div>
-        </div>
+        </a>        
       </div>
     </div>
   </div>

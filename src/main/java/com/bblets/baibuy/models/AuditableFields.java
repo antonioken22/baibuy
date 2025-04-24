@@ -29,7 +29,7 @@ public abstract class AuditableFields {
     private Integer createdBy;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 
     @LastModifiedBy

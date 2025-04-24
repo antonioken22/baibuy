@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,29 +47,8 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public String signin(@ModelAttribute UserDto userDto, HttpSession session, Model model) {
-        var optionalUser = userRepository.findByEmail(userDto.getEmail());
-
-        if (optionalUser.isEmpty()) {
-            model.addAttribute("error", "Invalid credentials.");
-            return "auth/signin";
-        }
-
-        User user = optionalUser.get();
-
-        if (!BCrypt.checkpw(userDto.getPassword(), user.getPassword())) {
-            model.addAttribute("error", "Invalid credentials.");
-            return "auth/signin";
-        }
-
-        if (user.isBlocked()) {
-            model.addAttribute("error", "This account is blocked.");
-            return "auth/signin";
-        }
-
-        session.setAttribute("loggedInUser", user);
-
-        return "redirect:/products";
+    public String signin(@ModelAttribute UserDto userDto, Model model) {
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/signout")
