@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
  <html lang="en">
  <head>
     <meta charset="UTF-8" />
@@ -341,3 +342,134 @@
      </script>
  </body>
  </html>
+=======
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(to right, #7b2ff7, #f107a3);
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .notification-item {
+            margin: 15px 0;
+            background-color: #f1f1f1;
+            padding: 10px 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .notification-item:hover {
+            background-color: #e2d3f6;
+        }
+        .toggle-title {
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .details {
+            margin-top: 10px;
+            display: none;
+        }
+        .notification-item.active .details {
+            display: block;
+        }
+        button.save-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #7b2ff7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button.save-btn:hover {
+            background-color: #611acc;
+        }
+        .details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.3s ease;
+            padding: 0 15px;
+        }
+
+        .notification-item.active .details {
+            max-height: 200px; /* Adjust this value based on your content */
+            padding: 10px 15px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Notification</h1>
+        </div>
+        <div class="notification-item" onclick="toggleDetails(this)">
+            <div class="toggle-title">
+                <span>Push Notifications</span>
+            </div>
+            <div class="details">
+                <p>- Order</p>
+                <p>- Chats</p>
+                <p>- Promotions</p>
+            </div>
+        </div>
+        <div class="notification-item" onclick="toggleDetails(this)">
+            <div class="toggle-title">
+                <span>In-App Notifications</span>
+            </div>
+            <div class="details">
+                <p>- Chats</p>
+                <p>- Promotions</p>
+            </div>
+        </div>
+        <div class="notification-item" onclick="toggleDetails(this)">
+            <div class="toggle-title">
+                <span>Email Notifications</span>
+            </div>
+            <div class="details">
+                <p>- Order Updates</p>
+                <p>- Customer Survey</p>
+            </div>
+        </div>
+        <div class="notification-item" onclick="toggleDetails(this)">
+            <div class="toggle-title">
+                <span>SMS Notifications</span>
+            </div>
+            <div class="details">
+                <p>- Promotions</p>
+            </div>
+        </div>
+        <button class="save-btn">Save Changes</button>
+    </div>
+
+    <script>
+        function toggleDetails(element) {
+            element.classList.toggle("active");
+        }
+    </script>
+</body>
+</html>
+>>>>>>> e5eb7b41d41dbebfe5fed0da1c793b9670f1ba6f

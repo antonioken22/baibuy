@@ -25,8 +25,13 @@ public class ViewController {
     private ProductsRepository productsRepository;
 
     @GetMapping("/")
-    public String redirectToSignIn() {
-        return "redirect:/auth/signin";
+    public String redirectToLanding() {
+        return "redirect:/landing/Landing";
+    }
+
+    @GetMapping("/landing/Landing")
+    public String landingPage() {
+        return "landing/Landing";
     }
 
     @GetMapping("/auth/signin")
@@ -60,21 +65,22 @@ public class ViewController {
 
         return "dashboard/UserDashboard";
     }
+
     @GetMapping("/profile")
-        public String userProfile(HttpSession session, Model model) {
-     User loggedInUser = (User) session.getAttribute("loggedInUser");
+    public String profilePage(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
 
-      if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
-         return "redirect:/auth/signin";
+        model.addAttribute("user", loggedInUser);
+
+        return "Profile/profile";
     }
 
-     model.addAttribute("user", loggedInUser); // So the view can use it
-
-        return "profile/prof"; // This points to /templates/Profile/prof.html
-    }
-  @GetMapping("/profile/address")
-    public String showAddressPage() {
-        return "profile/address"; // No .html extension, and path is relative to templates/
+    @GetMapping("/password")
+    public String passwordPage(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    
+    if (loggedInUser == null) {
+        return "redirect:/login"; 
     }
     @GetMapping("/profile/notif")
 public String showNotifPage(HttpSession session, Model model) {
@@ -100,6 +106,33 @@ public String showPrivacyPage(HttpSession session, Model model) {
     return "profile/privacy"; // maps to templates/Profile/privacy.html
 }
     
+    
+    model.addAttribute("user", loggedInUser);
+    return "Profile/password"; 
+    }
 
+    @GetMapping("/notifications")
+    public String notificationsPage(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+    if (loggedInUser == null) {
+        return "redirect:/login"; 
+    }
+
+    model.addAttribute("user", loggedInUser);
+    return "Profile/notifications"; 
+    }
+
+    @GetMapping("/privacy-settings")
+    public String privacySettingsPage(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+    if (loggedInUser == null) {
+        return "redirect:/login"; 
+    }
+
+    model.addAttribute("user", loggedInUser);
+    return "Profile/privacy-settings"; 
+    }
 
 }
