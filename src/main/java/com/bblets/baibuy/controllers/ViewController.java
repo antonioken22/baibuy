@@ -76,6 +76,29 @@ public class ViewController {
     public String showAddressPage() {
         return "profile/address"; // No .html extension, and path is relative to templates/
     }
+    @GetMapping("/profile/notif")
+public String showNotifPage(HttpSession session, Model model) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+    if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
+        return "redirect:/auth/signin";
+    }
+
+    model.addAttribute("user", loggedInUser);
+    return "profile/notif"; // maps to templates/Profile/notif.html
+}
+
+@GetMapping("/profile/privacy")
+public String showPrivacyPage(HttpSession session, Model model) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+    if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
+        return "redirect:/auth/signin";
+    }
+
+    model.addAttribute("user", loggedInUser);
+    return "profile/privacy"; // maps to templates/Profile/privacy.html
+}
     
 
 

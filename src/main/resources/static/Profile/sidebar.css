@@ -4,43 +4,74 @@
   left: 0;
   width: 60px;
   height: 100vh;
-  background-color: #3B1398;
-  padding-top: 80px;
-  z-index: 1000;
+  background-color: #FFFFFF;
+  padding-top: 100px;
+  z-index: 1;
   transition: width 0.3s ease;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .sidebar:hover {
-  width: 160px;
+  width: 180px;
 }
 
 .sidebar a {
-  display: block;
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  color: white;
-  margin: 25px 0;
+  color: #3B1398;
+  margin: 20px 0;
+  padding: 10px 16px;
+  transition: background-color 0.2s;
+}
+
+.sidebar a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 9px;
 }
 
 .icon-label {
   display: flex;
   align-items: center;
+  width: 100%;
   gap: 12px;
-  padding-left: 12px;
+  font-weight: 600;     
+  font-size: 25px; 
 }
 
 .sidebar img {
-  width: 24px;
-  filter: brightness(0) invert(1);
+  width: 25px;
+  flex-shrink: 10;
 }
 
+/* Label styles */
 .label {
-  opacity: 0;
   white-space: nowrap;
-  transition: opacity 0.2s ease;
-  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease, margin 0.3s ease;
+  margin-left: 0;
+  color: #3B1398;
+  font-size: 14px;
+  flex-grow: 1;
 }
 
 .sidebar:hover .label {
   opacity: 1;
+  margin-left: 4px;
 }
+.sidebar a.active {
+  background-color: #dcd1f8;     /* light purple highlight */
+  border-left: 2px solid #3B1398;
+  padding-left: 15px;
+  transition: all 0.3s ease;
+}
+
+.sidebar a.active .label {
+  font-weight: 700;
+  color: #3B1398;
+}
+
+.sidebar a:hover {
+  background-color: #ece7fb;
+}
+

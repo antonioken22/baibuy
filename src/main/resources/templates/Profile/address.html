@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Address</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-</head>
-<style>
+  <link rel="stylesheet" th:href="@{/css/baibuy-theme.css}">
+  <style>
     .sidebar {
       position: fixed;
       top: 0;
@@ -31,6 +31,11 @@
       margin: 25px 0;
     }
 
+    .sidebar a.active {
+      font-weight: bold;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
     .icon-label {
       display: flex;
       align-items: center;
@@ -40,7 +45,7 @@
 
     .sidebar img {
       width: 24px;
-      filter: brightness(0) invert(1); /* Makes icons white */
+      filter: brightness(0) invert(1);
     }
 
     .label {
@@ -167,43 +172,42 @@
       font-size: 0.875rem;
       color: gray;
     }
-</style>
-<div class="sidebar">
-    <a href="/profile" title="Profile">
-      <div class="icon-label">
-        <img src="/profile/USER.png" alt="Profile" />
-        <span class="label">Profile</span>
-      </div>
-    </a>
-    <a href="/profile/address" title="Address">
-      <div class="icon-label">
-        <img src="/profile/ADD.png" alt="Address" />
-        <span class="label">Address</span>
-      </div>
-    </a>
-    <a href="/profile/password" title="Password">
-      <div class="icon-label">
-        <img src="/profile/PASS.png" alt="Password" />
-        <span class="label">Change Password</span>
-      </div>
-    </a>
-  </div>
+  </style>
+</head>
+
 <body class="bg-gray-50 font-sans text-gray-800">
+  <!-- Sidebar include -->
+  <div id="sidebar-container"></div>
+
+  <script>
+    fetch("/Profile/sidebar.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("sidebar-container").innerHTML = data;
+
+        // Highlight current page link
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.sidebar a').forEach(link => {
+          const linkPath = link.getAttribute('href');
+          if (currentPath.includes(linkPath)) {
+            link.classList.add('active');
+          }
+        });
+      });
+  </script>
+
+  <div th:replace="dashboard/Navbar :: baiHeader"></div>
   <div class="max-w-5xl mx-auto px-6 py-4">
-    <!-- Header -->
     <div class="mb-4">
       <h2 class="text-lg font-medium text-gray-600">Welcome, Amanda</h2>
       <p class="text-sm text-gray-400">Tue, 07 June 2022</p>
     </div>
 
-    <!-- Section card -->
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-      <!-- Gradient header -->
       <div class="bg-gradient-to-r from-purple-400 to-indigo-600 px-6 py-4">
         <h1 class="text-2xl font-bold text-white">Address</h1>
       </div>
 
-      <!-- Profile info -->
       <div class="flex items-center px-6 py-4">
         <img class="w-14 h-14 rounded-full object-cover mr-4" src="https://via.placeholder.com/150" alt="Profile" />
         <div>
@@ -211,17 +215,14 @@
           <p class="text-sm text-gray-600">alexarawles@gmail.com</p>
         </div>
         <div class="ml-auto">
-          <button class="bg-purple-700 text-white px-4 py-2 rounded-full hover:bg-purple-800 text-sm">
-            + Add Address
-          </button>
+          <button class="bg-purple-700 text-white px-4 py-2 rounded-full hover:bg-purple-800 text-sm">+ Add Address</button>
         </div>
       </div>
 
-      <!-- Address list -->
       <div class="px-6 py-4">
         <h3 class="text-lg font-semibold mb-4">Addresses</h3>
 
-        <!-- Address block 1 (default) -->
+        <!-- Address 1 -->
         <div class="mb-6">
           <div class="flex justify-between items-center">
             <div>
@@ -239,7 +240,7 @@
           </div>
         </div>
 
-        <!-- Address block 2 -->
+        <!-- Address 2 -->
         <div class="border-t pt-4">
           <div class="flex justify-between items-center">
             <div>
@@ -259,9 +260,7 @@
 
         <!-- Save button -->
         <div class="mt-6 text-right">
-          <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-full">
-            Save Changes
-          </button>
+          <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-full">Save Changes</button>
         </div>
       </div>
     </div>
