@@ -37,6 +37,9 @@ public class ViewController {
     @Autowired
     private CebuLocationService cebuLocationService;
 
+    @Autowired
+    private MessageRepository messageRepository;    //wyups
+
     @GetMapping("/")
     public String landingPage() {
         return "landing/Landing"; // This loads the landing page template directly at root
