@@ -125,19 +125,22 @@ nav {
 }
 
 /* Dropdown Link Styling */
-.dropdown-menu a {
-  padding: 8px 16px;
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  background: white;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.group:hover .dropdown-menu {
   display: block;
-  font-size: 16px;
-  color: #333;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
 }
-
-.dropdown-menu a:hover {
-  background-color: #f3f4f6;
-}
-
 /* Ensure the dropdown aligns with the edge of the Shop menu */
 .relative {
   position: relative;

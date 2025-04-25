@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <!-- Add preconnect for external domains -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="UTF-8">
   <title>BaiBuy - Fashion E-commerce</title>
-  <!-- Add meta tags for mobile optimization -->
+
+  <!-- Mobile Optimization -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <!-- Compressed Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome with subset -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-  <!-- Fonts with display=swap -->
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Sorts+Mill+Goudy&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <!-- Local CSS -->
   <link th:href="@{/css/baibuy-theme.css}" rel="stylesheet">
   <link th:href="@{/css/landing.css}" rel="stylesheet">
@@ -21,65 +24,55 @@
 
 <body class="bg-[#3B1398] bg-opacity-10">
 
-  <!-- Promo Banner with mobile adjustments -->
+  <!-- Promo Banner -->
   <header>
     <div th:replace="components/PromoBanner :: promo-banner"></div>
      
     <!-- Desktop Navbar -->
     <nav class="hidden md:flex justify-between items-center bg-white px-4 sm:px-6 py-3">
-      <div class="w-full flex justify-between items-center md:w-auto">
-        <div class="text-3xl md:text-4xl font-aclonica">BAI BUY</div>
-      </div>
-  
-      <ul class="flex gap-x-16 w-full md:w-auto mt-4 md:mt-0">
-          <!-- Shop with Dropdown -->
-          <li class="relative group">
-              <a href="#" class="dropdown-toggle hover:text-purple-600 text-xl">Shop</a>
-              <div class="dropdown-menu">
-                  <a href="#" class="block">New</a>
-                  <a href="#" class="block">Used</a>
-                  <a href="#" class="block">Refurbished</a>
-                  <a href="#" class="block">Defective</a>
-              </div>
-          </li>
-          <li><a href="#" class="hover:text-purple-600 text-xl">On Sale</a></li>
-          <li><a href="#" class="hover:text-purple-600 text-xl">New Arrivals</a></li>
-          <li><a href="#" class="hover:text-purple-600 text-xl">Brands</a></li>
+      <div class="text-3xl md:text-4xl font-aclonica">BAI BUY</div>
+
+      <ul class="flex gap-x-16">
+        <li class="relative group">
+          <a href="/auth/signin" class="dropdown-toggle hover:text-purple-600 text-xl">Shop</a>
+          <div class="dropdown-menu">
+            <a href="/auth/signin" class="block px-4 py-2 hover:bg-gray-100">New</a>
+            <a href="/auth/signin" class="block px-4 py-2 hover:bg-gray-100">Used</a>
+            <a href="/auth/signin" class="block px-4 py-2 hover:bg-gray-100">Refurbished</a>
+            <a href="/auth/signin" class="block px-4 py-2 hover:bg-gray-100">Defective</a>
+          </div>
+        </li>
+        <li><a href="/auth/signin" class="hover:text-purple-600 text-xl">On Sale</a></li>
+        <li><a href="/auth/signin" class="hover:text-purple-600 text-xl">New Arrivals</a></li>
+        <li><a href="/auth/signin" class="hover:text-purple-600 text-xl">Brands</a></li>
       </ul>
-  
+
       <div class="flex items-center gap-3">
-        <input class="w-48">
-        <i class="fas fa-user text-black text-xl cursor-pointer"></i>
-        <i class="fas fa-shopping-cart text-black text-xl cursor-pointer"></i>
-  
-        <!-- Auth Buttons -->
-        <a href="/auth/signin" class="text-[#3B1398] border border-[#3B1398] bg-white hover:bg-[#3B1398]/20 px-4 py-1.5 rounded-lg text-sm sm:text-base font-aclonica transition duration-200">
-            Sign In
-        </a>
-        <a href="/auth/signup" class="bg-[#3B1398] text-white hover:bg-[#2c0e72] px-4 py-1.5 rounded-lg text-sm sm:text-base font-aclonica shadow-sm transition duration-200">
-            Sign Up
-        </a>
+        <input type="text" placeholder="Search..." class="w-48 border border-gray-300 outline-[#3B1398] focus:outline-none focus:ring-2 focus:ring-[#3B1398] px-3 py-1.5 rounded-md transition duration-200" />
+       <a href="/auth/signup"> <i class="fas fa-user text-black text-xl cursor-pointer"></i></a>
+       <a href="/auth/signup"><i class="fas fa-shopping-cart text-black text-xl cursor-pointer"></i></a>
+        <a href="/auth/signin" class="text-[#3B1398] border border-[#3B1398] bg-white hover:bg-[#3B1398]/20 px-4 py-1.5 rounded-lg text-sm font-aclonica transition">Sign In</a>
+        <a href="/auth/signup" class="bg-[#3B1398] text-white hover:bg-[#2c0e72] px-4 py-1.5 rounded-lg text-sm font-aclonica transition">Sign Up</a>
       </div>
     </nav>
 
     <!-- Mobile Navbar -->
     <nav class="md:hidden flex justify-between items-center bg-white px-4 py-3 sticky top-0 z-40 shadow-sm">
       <div class="text-2xl font-aclonica">BAI BUY</div>
-      <button id="mobile-menu-button" class="text-2xl p-3" aria-label="Open menu">
+      <button id="mobile-menu-button" class="text-2xl p-3" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-sidebar">
         <i class="fas fa-bars"></i>
       </button>
     </nav>
   </header>
-    
-   <!-- Mobile Sidebar -->
-   <div id="mobile-sidebar" class="fixed inset-y-0 left-[-100%] w-64 bg-white shadow-xl z-50 transition-all duration-300">
+
+  <!-- Mobile Sidebar -->
+  <div id="mobile-sidebar" class="fixed inset-y-0 left-[-100%] w-64 bg-white shadow-xl z-50 transition-all duration-300">
     <div class="flex justify-between items-center p-4 border-b">
       <div class="text-lg font-aclonica">BAI BUY</div>
       <button id="close-sidebar" class="text-xl p-3" aria-label="Close menu">
         <i class="fas fa-times"></i>
       </button>
     </div>
-    
     <ul class="space-y-1 p-3">
       <li>
         <details class="group">
@@ -87,105 +80,88 @@
             Shop <i class="fas fa-chevron-down ml-2 text-sm group-open:rotate-180 transition-transform"></i>
           </summary>
           <ul class="pl-4 mt-1 space-y-1">
-            <li><a href="#" class="block p-2 text-sm hover:bg-gray-100 rounded">New</a></li>
-            <li><a href="#" class="block p-2 text-sm hover:bg-gray-100 rounded">Used</a></li>
-            <li><a href="#" class="block p-2 text-sm hover:bg-gray-100 rounded">Refurbished</a></li>
+            <li><a href="/auth/signin" class="block p-2 text-sm hover:bg-gray-100 rounded">New</a></li>
+            <li><a href="/auth/signin" class="block p-2 text-sm hover:bg-gray-100 rounded">Used</a></li>
+            <li><a href="/auth/signin" class="block p-2 text-sm hover:bg-gray-100 rounded">Refurbished</a></li>
           </ul>
         </details>
       </li>
-      <li><a href="#" class="block p-3 hover:bg-gray-100 rounded-lg">On Sale</a></li>
-      <li><a href="#" class="block p-3 hover:bg-gray-100 rounded-lg">New Arrivals</a></li>
-      <li><a href="#" class="block p-3 hover:bg-gray-100 rounded-lg">Brands</a></li>
+      <li><a href="/auth/signin" class="block p-3 hover:bg-gray-100 rounded-lg">On Sale</a></li>
+      <li><a href="/auth/signin" class="block p-3 hover:bg-gray-100 rounded-lg">Bagong Abots</a></li>
+      <li><a href="/auth/signin" class="block p-3 hover:bg-gray-100 rounded-lg">Brands</a></li>
       <li class="mt-4 space-y-2">
-        <a href="/auth/signin" class="block w-full text-center bg-[#3B1398] text-white p-3 rounded-lg active:scale-95 transition-transform">
-          Sign In
-        </a>
-        <a href="/auth/signup" class="block w-full text-center border-2 border-[#3B1398] text-[#3B1398] p-3 rounded-lg active:scale-95 transition-transform">
-          Sign Up
-        </a>
+        <a href="/auth/signin" class="block w-full text-center bg-[#3B1398] text-white p-3 rounded-lg active:scale-95 transition-transform">Sign In</a>
+        <a href="/auth/signup" class="block w-full text-center border-2 border-[#3B1398] text-[#3B1398] p-3 rounded-lg active:scale-95 transition-transform">Sign Up</a>
       </li>
     </ul>
   </div>
 
-  <!-- Hero Section with mobile optimizations -->
+  <!-- Sidebar Overlay -->
+  <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300"></div>
+
   <!-- Hero Section -->
-<section class="relative min-h-[50vh] md:h-screen">
-  <!-- Background Image with responsive positioning -->
-  <div class="absolute inset-0 bg-cover bg-center md:bg-[position:90%_center] bg-no-repeat"
-       style="background-image: url('/BG2.jpg');"
-       loading="lazy">
-  </div>
-
-  <!-- Content Container -->
-  <div class="relative z-10 h-full flex items-center">
-    <div class="px-4 md:px-16 py-12 w-full max-w-2xl">
-      <div class="text-center md:text-left">
-        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-tight">
-          Basta Buy na Bai! Ayg Dugay!
-        </h1>
-        
-        <p class="text-gray-700 mt-4 md:mt-6 text-base md:text-lg lg:text-xl">
-          Pangitaa ang mga sulit finds sa BuyBai, where great deals are just a click away.
-        </p>
-        
-        <a href="/dashboard" 
-           class="inline-block bg-[#3B1398] text-white px-6 py-3 md:px-8 md:py-4 rounded-full mt-6 
-                  active:scale-95 transition-transform text-sm md:text-base hover:bg-[#2c0e72]">
-          Buy Now!
-        </a>
-
-        <!-- Responsive Stats -->
-        <div class="mt-8 md:mt-12 font-satoshi">
-          <div class="grid grid-cols-2 gap-4 md:flex md:gap-8 lg:gap-12">
-            <div class="text-center md:text-left">
-              <div class="text-2xl md:text-3xl lg:text-4xl font-bold">200+</div>
-              <div class="text-xs md:text-sm lg:text-base">Brands</div>
-            </div>
-            <div class="text-center md:text-left">
-              <div class="text-2xl md:text-3xl lg:text-4xl font-bold">2,000</div>
-              <div class="text-xs md:text-sm lg:text-base">Products</div>
-            </div>
-            <div class="col-span-2 md:col-auto text-center md:text-left">
-              <div class="text-2xl md:text-3xl lg:text-4xl font-bold">30k+</div>
-              <div class="text-xs md:text-sm lg:text-base">Customers</div>
+  <section class="relative min-h-[50vh] md:h-screen">
+    <div class="absolute inset-0 bg-cover bg-center md:bg-[position:90%_center] bg-no-repeat" style="background-image: url('/BG2.jpg');"></div>
+    <div class="relative z-10 h-full flex items-center">
+      <div class="px-4 md:px-16 py-12 w-full max-w-2xl">
+        <div class="text-center md:text-left">
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-tight">Basta Buy na Bai! Ayg Dugay!</h1>
+          <p class="text-gray-700 mt-4 md:mt-6 text-base md:text-lg lg:text-xl">Pangitaa ang mga sulit finds sa BuyBai, where great deals are just a click away.</p>
+          <a href="/dashboard" class="inline-block bg-[#3B1398] text-white px-6 py-3 md:px-8 md:py-4 rounded-full mt-6 active:scale-95 transition-transform text-sm md:text-base hover:bg-[#2c0e72]">Buy Now!</a>
+          <div class="mt-8 md:mt-12 font-satoshi">
+            <div class="grid grid-cols-2 gap-4 md:flex md:gap-8 lg:gap-12">
+              <div class="text-center md:text-left">
+                <div class="text-2xl md:text-3xl lg:text-4xl font-bold">200+</div>
+                <div class="text-xs md:text-sm lg:text-base">Brands</div>
+              </div>
+              <div class="text-center md:text-left">
+                <div class="text-2xl md:text-3xl lg:text-4xl font-bold">2,000</div>
+                <div class="text-xs md:text-sm lg:text-base">Products</div>
+              </div>
+              <div class="col-span-2 md:col-auto text-center md:text-left">
+                <div class="text-2xl md:text-3xl lg:text-4xl font-bold">30k+</div>
+                <div class="text-xs md:text-sm lg:text-base">Customers</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-  <!-- Brand Logos -->
+  <!-- Brand Logos + Product Promo + Footer -->
   <div th:replace="components/BrandLogos :: brand-logos"></div>
   <div th:replace="components/ProductArrivalAndTopselling :: product-promo-banner"></div>
   <div th:replace="components/Footer :: landing-footer"></div>
 
+  <!-- Scripts -->
   <script>
     const mobileMenuButton = document.getElementById('mobile-menu-button');
-       const sidebar = document.getElementById('mobile-sidebar');
-       const overlay = document.getElementById('sidebar-overlay');
-       const closeButton = document.getElementById('close-sidebar');
-   
-       function toggleSidebar() {
-         sidebar.classList.toggle('left-[-100%]');
-         sidebar.classList.toggle('left-0');
-         overlay.classList.toggle('hidden');
-       }
-   
-       mobileMenuButton.addEventListener('click', toggleSidebar);
-       closeButton.addEventListener('click', toggleSidebar);
-       overlay.addEventListener('click', toggleSidebar);
-   
-       // Close sidebar on resize to desktop
-       window.addEventListener('resize', () => {
-         if (window.innerWidth >= 768) {
-           sidebar.classList.add('left-[-100%]');
-           sidebar.classList.remove('left-0');
-           overlay.classList.add('hidden');
-         }
-       });
-     </script>
+    const sidebar = document.getElementById('mobile-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const closeButton = document.getElementById('close-sidebar');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('left-[-100%]');
+      sidebar.classList.toggle('left-0');
+      overlay.classList.toggle('hidden');
+      const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+      mobileMenuButton.setAttribute('aria-expanded', !expanded);
+    }
+
+    mobileMenuButton.addEventListener('click', toggleSidebar);
+    closeButton.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        sidebar.classList.add('left-[-100%]');
+        sidebar.classList.remove('left-0');
+        overlay.classList.add('hidden');
+        mobileMenuButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
 
 </body>
 </html>
