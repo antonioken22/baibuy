@@ -34,3 +34,6 @@ build/
 
 # public (server uploads)
 public/uploads
+
+# application.properties
+src/main/resources/application.properties

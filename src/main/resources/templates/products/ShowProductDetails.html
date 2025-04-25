@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="'Product - ' + ${product.name}">Product</title>
+  <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/baibuy-theme.css}" />
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+</head>
+<body>
+  <div th:replace="dashboard/Navbar :: baiHeader"></div>
+  <div style="padding-top: 100px;"></div>
+
+  <div class="container my-5">
+    <!-- Back Button -->
+<a th:href="@{/dashboard}" class="btn btn-primary px-4 me-2 mb-3">
+  <i class="fas fa-arrow-left me-2"></i>Back
+</a>
+    <div class="card shadow-lg border-0 rounded-4 p-4">
+      <div class="row g-5 align-items-center">
+        <!-- Image Carousel -->
+        <div class="col-md-6">
+          <div id="productCarousel" class="carousel slide rounded" data-bs-ride="carousel">
+            <div class="carousel-inner rounded">
+              <div class="carousel-item" th:each="img, iterStat : ${product.imageUrls}" th:classappend="${iterStat.index == 0} ? 'active'">
+                <img th:src="@{${img}}" class="d-block w-100 rounded" style="max-height: 450px; object-fit: contain;" alt="Product Image" />
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+          <h2 th:text="${product.name}" class="form-title mb-1"></h2>
+          <p class="text-muted mb-2" th:text="${product.brand}"></p>
+
+          <h4 class="text-primary fw-bold mb-4">
+            <i class="fas fa-tag me-2"></i>Php <span th:text="${product.price}"></span>
+          </h4>
+
+          <ul class="list-group mb-4 border-0">
+            <li class="list-group-item border-0 ps-0">
+              <i class="fas fa-list me-2 text-primary"></i><strong>Category:</strong> <span th:text="${product.category}"></span>
+            </li>
+            <li class="list-group-item border-0 ps-0">
+              <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                <strong>Location:</strong>
+                <span th:text="${product.barangayName}"></span>,
+                <span th:text="${municipalityName}"></span>
+            </li>
+            <li class="list-group-item border-0 ps-0">
+              <i class="fas fa-box-open me-2 text-primary"></i><strong>Condition:</strong> <span th:text="${product.productCondition}"></span>
+            </li>
+            <li class="list-group-item border-0 ps-0">
+              <i class="fas fa-cubes me-2 text-primary"></i><strong>Stocks:</strong> <span th:text="${product.stocks}"></span>
+            </li>
+            <li class="list-group-item border-0 ps-0">
+              <i class="fas fa-truck me-2 text-primary"></i><strong>Delivery:</strong> <span th:text="${product.deliveryPreference}"></span>
+            </li>
+            <li class="list-group-item border-0 ps-0" th:if="${product.tags != null}">
+              <i class="fas fa-tags me-2 text-primary"></i><strong>Tags:</strong> <span th:text="${#strings.listJoin(product.tags, ', ')}"></span>
+            </li>
+          </ul>
+
+          <div class="text-muted small mb-4">
+            <p><i class="fas fa-user me-2"></i><strong>Created by:</strong> <span th:text="${createdByFullName}"></span></p>
+            <p><i class="fas fa-calendar-plus me-2"></i><strong>Created at:</strong> <span th:text="${#temporals.format(product.createdAt, 'MMM dd, yyyy h:mm a')}"></span></p>
+            <p><i class="fas fa-calendar-check me-2"></i><strong>Updated at:</strong> <span th:text="${#temporals.format(product.updatedAt, 'MMM dd, yyyy h:mm a')}"></span></p>
+          </div>
+
+          <!-- Send Message (non-owner only) -->
+          <th:block th:if="${!canEdit}">
+            <a href="javascript:void(0);" class="btn btn-outline-primary rounded-3 px-4 mb-2" data-bs-toggle="modal" data-bs-target="#chatModal">
+              <i class="fas fa-message me-2"></i>Send Seller a Message
+            </a>
+          </th:block>
+
+          <!-- Edit/Delete (owner only) -->
+          <th:block th:if="${canEdit}">
+            <a th:href="@{'/products/edit/' + ${product.id}}" class="btn btn-primary px-4 me-2 mb-2">
+              <i class="fas fa-edit me-2"></i>Edit
+            </a>
+            <form th:action="@{'/products/delete/' + ${product.id}}" method="post" class="d-inline">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+              <button type="submit" class="btn btn-danger px-4 mb-2" onclick="return confirm('Are you sure to delete this product?');">
+                <i class="fas fa-trash-alt me-2"></i>Delete
+              </button>
+            </form>
+          </th:block>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="components/ChatModal :: chatModal(${product})"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+</body>
+</html>

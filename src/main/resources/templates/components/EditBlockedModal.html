@@ -1,0 +1,37 @@
+<div th:fragment="blockModal">
+  <div class="modal fade" id="editBlockedModal" tabindex="-1" aria-labelledby="editBlockedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded shadow p-3 border-0 bg-white">
+
+        <div class="modal-header border-0">
+          <h5 class="modal-title font-aclonica text-customBlack" id="editBlockedModalLabel">
+            Edit Blocked Status
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="blockForm" method="post" th:action="@{/products/edit-blocked/__id__}">
+          <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label font-poppins">Product Name</label>
+              <input type="text" class="form-control" id="blockProductName" readonly>
+            </div>
+
+            <div class="form-check mb-3">
+              <input type="checkbox" class="form-check-input" id="blockCheckbox" name="isBlocked">
+              <label class="form-check-label font-poppins" for="blockCheckbox">Blocked?</label>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0">
+            <button type="submit" class="btn btn-primary font-poppins px-4">Save</button>
+            <button type="button" class="btn btn-secondary font-poppins ms-2" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

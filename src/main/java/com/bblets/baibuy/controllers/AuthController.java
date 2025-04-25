@@ -8,13 +8,11 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @Controller
 @RequestMapping("/auth")
@@ -22,6 +20,9 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
     public String signup(@Valid @ModelAttribute UserDto userDto, BindingResult result) {
@@ -35,45 +36,19 @@ public class AuthController {
 
         User user = new User();
         user.setEmail(userDto.getEmail());
-        user.setPassword(BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setImageUrl(userDto.getImageUrl());
         user.setRole(User.Role.USER);
-        user.setCreatedAt(new Date());
-
         userRepository.save(user);
+
         return "redirect:/auth/signin";
     }
 
     @PostMapping("/signin")
-    public String signin(@ModelAttribute UserDto userDto, HttpSession session, Model model) {
-        var optionalUser = userRepository.findByEmail(userDto.getEmail());
-
-        if (optionalUser.isEmpty()) {
-            model.addAttribute("error", "Invalid credentials.");
-            return "auth/signin";
-        }
-
-        User user = optionalUser.get();
-
-        if (!BCrypt.checkpw(userDto.getPassword(), user.getPassword())) {
-            model.addAttribute("error", "Invalid credentials.");
-            return "auth/signin";
-        }
-
-        if (user.isBlocked()) {
-            model.addAttribute("error", "This account is blocked.");
-            return "auth/signin";
-        }
-
-        session.setAttribute("loggedInUser", user);
-
-        if (user.getRole() == User.Role.ADMIN || user.getRole() == User.Role.SELLER) {
-            return "redirect:/products";
-        } else {
-            return "redirect:/dashboard";
-        }
+    public String signin(@ModelAttribute UserDto userDto, Model model) {
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/signout")
