@@ -1,82 +1,14 @@
 <!-- /templates/fragments/brandLogos.html -->
+<link th:href="@{/css/landing.css}" rel="stylesheet">
+<link th:href="@{/css/baibuy-theme.css}" rel="stylesheet">
 <div th:fragment="brand-logos">
-    <style>
-        .brand-logos-container {
-            width: 100%;
-            padding: 0 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #3B1398; /* Background color */
-        }
-
-        .brand-logos {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 200px; /* Adjusted gap for more reasonable spacing */
-            padding: 32px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Continuous animation for logo fade-in and subtle movement */
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0.5;
-                transform: translateY(10px);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0.5;
-                transform: translateY(10px);
-            }
-        }
-
-        .brand-logo {
-            height: 80px;
-            max-width: 160px;
-            animation: fadeInUp 3s ease-in-out infinite; /* Infinite loop with gentle animation */
-            animation-delay: 0s;
-        }
-
-        .brand-logo:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .brand-logo:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .brand-logo:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        .brand-logo:nth-child(4) {
-            animation-delay: 0.4s;
-        }
-
-        .brand-logo:nth-child(5) {
-            animation-delay: 0.5s;
-        }
-
-        .brand-logo:hover {
-            opacity: 1;
-            transform: scale(1.05);
-            transition: transform 0.3s ease-in-out;
-        }
-    </style>
-
     <div class="brand-logos-container">
         <section class="brand-logos">
-            <img src="/brandlogos/versace.svg" alt="Versace" class="brand-logo" />
+            <img src="/brandlogos/samsung.svg" alt="Versace" class="brand-logo" />
             <img src="/brandlogos/zara.svg" alt="Zara" class="brand-logo" />
-            <img src="/brandlogos/gucci.svg" alt="Gucci" class="brand-logo" />
-            <img src="/brandlogos/prada.svg" alt="Prada" class="brand-logo" />
-            <img src="/brandlogos/calvinklein.svg" alt="Calvin Klein" class="brand-logo" />
+            <img src="/brandlogos/apple.svg" alt="Gucci" class="brand-logo" />
+            <img src="/brandlogos/adidas.svg" alt="Prada" class="brand-logo" />
+            <img src="/brandlogos/nike2.svg" alt="Calvin Klein" class="brand-logo" />
         </section>
     </div>
 </div>

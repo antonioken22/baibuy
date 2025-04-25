@@ -1,252 +1,170 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>BaiBuy - Fashion E-commerce</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <!-- Mobile Optimization -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Sorts+Mill+Goudy&family=Satoshi:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Local CSS -->
   <link th:href="@{/css/baibuy-theme.css}" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Satoshi', sans-serif;
-    }
-    h1, h2, h4 {
-      font-family: 'Aclonica', sans-serif;
-    }
-    p, span {
-      font-family: 'Sorts Mill Goudy', serif;
-    }
-    .brand-logos-container {
-    width: 100%;
-    padding: 0 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #3B1398; /* Background color */
-  }
-
-  .brand-logos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 200px; /* Increased gap between the logos */
-    padding: 32px 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Animation for logo fade-in and move-up effect */
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .brand-logo {
-    height: 80px;
-    max-width: 160px;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease-out forwards;
-    animation-delay: 0s;
-  }
-
-  .brand-logo:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-
-  .brand-logo:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-
-  .brand-logo:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  .brand-logo:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-
-  .brand-logo:nth-child(5) {
-    animation-delay: 0.5s;
-  }
-
-  .brand-logo:hover {
-    opacity: 1;
-    transform: scale(1.05);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  /* Ensuring dropdown is above the background image */
-  .group:hover .absolute {
-    z-index: 10; /* Make sure the dropdown is on top of the background image */
-  }
-
-  /* Hide the dropdown by default */
-  .dropdown-menu {
-    display: none;
-    z-index: 10; /* Ensure the dropdown is above other elements */
-    position: absolute;
-    left: 0; /* Align the dropdown with the left edge of the parent */
-    top: 100%;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 8px 0;
-    min-width: 180px;
-  }
-
-  /* Show dropdown when active */
-  .dropdown-menu.active {
-    display: block;
-  }
-
-  /* Arrow Indicator next to "Shop" */
-  .dropdown-toggle {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    transition: color 0.2s ease;
-  }
-
-  .dropdown-toggle::after {
-    content: '▼';
-    margin-left: 8px;
-    font-size: 14px;
-    color: #6b7280; /* Default color */
-    transition: transform 0.2s ease;
-  }
-
-  .dropdown-toggle.active::after {
-    transform: rotate(180deg); /* Rotate the arrow when active */
-  }
-
-  /* Make sure the navbar has a higher z-index than the background */
-  nav {
-    position: relative;
-    z-index: 20;
-    font-family: 'Sorts Mill Goudy', serif;
-  }
-
-  /* Dropdown Link Styling */
-  .dropdown-menu a {
-    padding: 8px 16px;
-    display: block;
-    font-size: 16px;
-    color: #333;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-  }
-
-  .dropdown-menu a:hover {
-    background-color: #f3f4f6;
-  }
-
-  /* Ensure the dropdown aligns with the edge of the Shop menu */
-  .relative {
-    position: relative;
-  }
-
-  /* Navbar styling */
-
-
-  </style>
+  <link th:href="@{/css/landing.css}" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-[#3B1398] bg-opacity-10">
 
   <!-- Promo Banner -->
   <header>
     <div th:replace="components/PromoBanner :: promo-banner"></div>
-    
-    <!-- Navbar -->
-    <nav class="flex justify-between items-center bg-white font-sorts-mill-goudy font-semibold px-6 sm:px-12 py-4 shadow-md">
-        <div class="text-4xl font-bold text-black font-aclonica">BAI BUY</div>
-        <ul class="hidden gap-x-10 md:flex space-x-6 text-black font-medium">
-            <!-- Shop with Dropdown -->
-            <li class="relative group" onclick="toggleDropdown(event)">
-                <a href="#" class="dropdown-toggle hover:text-purple-600 text-xl">Shop</a>
-                <div class="dropdown-menu">
-                    <a href="#" class="block">Men's Clothing</a>
-                    <a href="#" class="block">Women's Clothing</a>
-                    <a href="#" class="block">Kids' Clothing</a>
-                    <a href="#" class="block">Accessories</a>
-                </div>
-            </li>
-            <li><a href="#" class="hover:text-purple-600 text-xl">On Sale</a></li>
-            <li><a href="#" class="hover:text-purple-600 text-xl">New Arrivals</a></li>
-            <li><a href="#" class="hover:text-purple-600 text-xl">Brands</a></li>
-        </ul>
-        <div class="flex items-center space-x-4">
-            <input type="text" placeholder="Search products..." class="border border-black px-3 py-1 rounded-full w-28 sm:w-48 lg:w-64">
-            <i class="fas fa-user text-black text-xl cursor-pointer"></i>
-            <i class="fas fa-shopping-cart text-black text-xl cursor-pointer"></i>
-        </div>
+     
+    <!-- Desktop Navbar -->
+    <nav class="hidden md:flex justify-between items-center bg-white px-4 sm:px-6 py-3">
+      <div class="text-3xl md:text-4xl font-aclonica">BAI BUY</div>
+
+      <ul class="flex gap-x-16">
+        <li class="relative group">
+          <a href="/auth/signin" class="dropdown-toggle hover:text-purple-600 text-xl">Shop</a>
+          <div class="dropdown-menu">
+            <a href="/auth/signin" class="block px-4 py-2 hover:bg-gray-100">New</a>
+            <a href="/auth/signin" class="block px-4 py-2 hover:bg-gray-100">Used</a>
+            <a href="/auth/signin" class="block px-4 py-2 hover:bg-gray-100">Refurbished</a>
+            <a href="/auth/signin" class="block px-4 py-2 hover:bg-gray-100">Defective</a>
+          </div>
+        </li>
+        <li><a href="/auth/signin" class="hover:text-purple-600 text-xl">On Sale</a></li>
+        <li><a href="/auth/signin" class="hover:text-purple-600 text-xl">New Arrivals</a></li>
+        <li><a href="/auth/signin" class="hover:text-purple-600 text-xl">Brands</a></li>
+      </ul>
+
+      <div class="flex items-center gap-3">
+        <input type="text" placeholder="Search..." class="w-48 border border-gray-300 outline-[#3B1398] focus:outline-none focus:ring-2 focus:ring-[#3B1398] px-3 py-1.5 rounded-md transition duration-200" />
+       <a href="/auth/signup"> <i class="fas fa-user text-black text-xl cursor-pointer"></i></a>
+       <a href="/auth/signup"><i class="fas fa-shopping-cart text-black text-xl cursor-pointer"></i></a>
+        <a href="/auth/signin" class="text-[#3B1398] border border-[#3B1398] bg-white hover:bg-[#3B1398]/20 px-4 py-1.5 rounded-lg text-sm font-aclonica transition">Sign In</a>
+        <a href="/auth/signup" class="bg-[#3B1398] text-white hover:bg-[#2c0e72] px-4 py-1.5 rounded-lg text-sm font-aclonica transition">Sign Up</a>
+      </div>
     </nav>
-    
+
+    <!-- Mobile Navbar -->
+    <nav class="md:hidden flex justify-between items-center bg-white px-4 py-3 sticky top-0 z-40 shadow-sm">
+      <div class="text-2xl font-aclonica">BAI BUY</div>
+      <button id="mobile-menu-button" class="text-2xl p-3" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-sidebar">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
   </header>
-    
-  <!-- Hero Section -->
-  <section class="relative w-full h-screen">
-    <!-- Background Image -->
-    <div 
-      class="absolute inset-0 bg-cover bg-center z-0"
-      style="background-image: url('/modelLanding.png');">
+
+  <!-- Mobile Sidebar -->
+  <div id="mobile-sidebar" class="fixed inset-y-0 left-[-100%] w-64 bg-white shadow-xl z-50 transition-all duration-300">
+    <div class="flex justify-between items-center p-4 border-b">
+      <div class="text-lg font-aclonica">BAI BUY</div>
+      <button id="close-sidebar" class="text-xl p-3" aria-label="Close menu">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-    
-    <!-- Content -->
-    <div class="relative z-10 px-8 md:px-16 py-12 flex items-center h-full">
-      <div class="max-w-xl text-white drop-shadow-lg">
-        <h1 class="text-5xl md:text-6xl font-bold capitalize text-black">Find Clothes That Match Your Style</h1>
-        <p class="text-gray-700 mt-4">
-          Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.
-        </p>
-        <a href="#" class="bg-[#3B1398] text-white px-6 py-3 rounded-full inline-block mt-6 transition hover:bg-black">
-          Shop Now
-        </a>
-  
-        <!-- Stats -->
-        <div class="flex flex-wrap gap-24 mt-8 text-3xl sm:text-4xl text-black font-satoshi font-bold">
-          <span class="break-line">200+</span>
-          <span class="break-line">2,000</span>
-          <span class="break-line">30,000+</span>
-        </div>
-        <div class="flex flex-wrap gap-x-10 gap-y-2 mt-2 text-sm text-black font-sorts-mill-goudy font-light">
-          <span>International Brands</span>
-          <span class="mr-16">High-Quality Products</span>
-          <span>Happy Customers</span>
+    <ul class="space-y-1 p-3">
+      <li>
+        <details class="group">
+          <summary class="flex items-center p-3 hover:bg-gray-100 rounded-lg cursor-pointer">
+            Shop <i class="fas fa-chevron-down ml-2 text-sm group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <ul class="pl-4 mt-1 space-y-1">
+            <li><a href="/auth/signin" class="block p-2 text-sm hover:bg-gray-100 rounded">New</a></li>
+            <li><a href="/auth/signin" class="block p-2 text-sm hover:bg-gray-100 rounded">Used</a></li>
+            <li><a href="/auth/signin" class="block p-2 text-sm hover:bg-gray-100 rounded">Refurbished</a></li>
+          </ul>
+        </details>
+      </li>
+      <li><a href="/auth/signin" class="block p-3 hover:bg-gray-100 rounded-lg">On Sale</a></li>
+      <li><a href="/auth/signin" class="block p-3 hover:bg-gray-100 rounded-lg">Bagong Abots</a></li>
+      <li><a href="/auth/signin" class="block p-3 hover:bg-gray-100 rounded-lg">Brands</a></li>
+      <li class="mt-4 space-y-2">
+        <a href="/auth/signin" class="block w-full text-center bg-[#3B1398] text-white p-3 rounded-lg active:scale-95 transition-transform">Sign In</a>
+        <a href="/auth/signup" class="block w-full text-center border-2 border-[#3B1398] text-[#3B1398] p-3 rounded-lg active:scale-95 transition-transform">Sign Up</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Sidebar Overlay -->
+  <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300"></div>
+
+  <!-- Hero Section -->
+ <section class="relative py-10 md:py-20 lg:py-32">
+  <div
+      class="absolute inset-0 bg-no-repeat bg-center md:bg-[position:90%_center] bg-[size:200px] md:bg-[size:auto]"
+      style="background-image: url('/holder.png');"
+    >
+  </div>
+    <div class="relative z-10 h-full flex items-center">
+      <div class="px-4 md:px-16 py-12 w-full max-w-2xl">
+        <div class="text-center md:text-left">
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-tight">Basta Buy na Bai! Ayg Dugay!</h1>
+          <p class="text-gray-700 mt-4 md:mt-6 text-base md:text-lg lg:text-xl">Pangitaa ang mga sulit finds sa BuyBai, where great deals are just a click away.</p>
+          <a href="/dashboard" class="inline-block bg-[#3B1398] text-white px-6 py-3 md:px-8 md:py-4 rounded-full mt-6 active:scale-95 transition-transform text-sm md:text-base hover:bg-[#2c0e72]">Buy Now!</a>
+          <div class="mt-8 md:mt-12 font-satoshi">
+            <div class="grid grid-cols-2 gap-4 md:flex md:gap-8 lg:gap-12">
+              <div class="text-center md:text-left">
+                <div class="text-2xl md:text-3xl lg:text-4xl font-bold">200+</div>
+                <div class="text-xs md:text-sm lg:text-base">Brands</div>
+              </div>
+              <div class="text-center md:text-left">
+                <div class="text-2xl md:text-3xl lg:text-4xl font-bold">2,000</div>
+                <div class="text-xs md:text-sm lg:text-base">Products</div>
+              </div>
+              <div class="col-span-2 md:col-auto text-center md:text-left">
+                <div class="text-2xl md:text-3xl lg:text-4xl font-bold">30k+</div>
+                <div class="text-xs md:text-sm lg:text-base">Customers</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Brand Logos -->
+  <!-- Brand Logos + Product Promo + Footer -->
   <div th:replace="components/BrandLogos :: brand-logos"></div>
+  <div th:replace="components/ProductArrivalAndTopselling :: product-promo-banner"></div>
+  <div th:replace="components/Footer :: landing-footer"></div>
 
-  <div th:replace="components/ProductArrivalandTopselling :: product-promo-banner"></div>
-
-
-
-
-  
+  <!-- Scripts -->
   <script>
-    function toggleDropdown(event) {
-      // Prevent the default anchor link behavior
-      event.preventDefault();
-      
-      // Get the dropdown menu and toggle active class
-      const dropdownMenu = event.target.nextElementSibling;
-      const toggleLink = event.target;
-      
-      // Toggle the 'active' class to show or hide the dropdown and rotate the arrow
-      dropdownMenu.classList.toggle('active');
-      toggleLink.classList.toggle('active');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const sidebar = document.getElementById('mobile-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const closeButton = document.getElementById('close-sidebar');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('left-[-100%]');
+      sidebar.classList.toggle('left-0');
+      overlay.classList.toggle('hidden');
+      const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+      mobileMenuButton.setAttribute('aria-expanded', !expanded);
     }
+
+    mobileMenuButton.addEventListener('click', toggleSidebar);
+    closeButton.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        sidebar.classList.add('left-[-100%]');
+        sidebar.classList.remove('left-0');
+        overlay.classList.add('hidden');
+        mobileMenuButton.setAttribute('aria-expanded', 'false');
+      }
+    });
   </script>
 
 </body>
