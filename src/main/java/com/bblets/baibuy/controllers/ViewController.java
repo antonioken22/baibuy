@@ -100,7 +100,7 @@ public class ViewController {
     return "Profile/notifications"; 
     }
 
-    @GetMapping("/privacy-settings")
+    @GetMapping("/privacy")
     public String privacySettingsPage(Model model, HttpSession session) {
     User loggedInUser = (User) session.getAttribute("loggedInUser");
 
@@ -109,7 +109,7 @@ public class ViewController {
     }
 
     model.addAttribute("user", loggedInUser);
-    return "Profile/privacy-settings"; 
+    return "Profile/privacy"; 
     }
 
 }
