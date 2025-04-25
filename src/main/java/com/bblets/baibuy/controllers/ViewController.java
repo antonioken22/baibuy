@@ -31,26 +31,16 @@ public class ViewController {
 
     @Autowired
     private ProductsRepository productsRepository;
-
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private CebuLocationService cebuLocationService;
 
-    @Autowired
-    private MessageRepository messageRepository;
-
     @GetMapping("/")
-    public String redirectToLanding() {
-        return "redirect:/landing/Landing";
-    }
-
-    @GetMapping("/landing/Landing")
     public String landingPage() {
-        return "landing/Landing";
+        return "landing/Landing"; // This loads the landing page template directly at root
     }
-
     @GetMapping("/auth/signin")
     public String loginPage(Model model) {
         model.addAttribute("userDto", new UserDto());
