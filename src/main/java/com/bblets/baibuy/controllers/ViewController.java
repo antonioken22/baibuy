@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.bblets.baibuy.security.AuthUserDetails;
 import com.bblets.baibuy.services.CebuLocationService;
 import com.bblets.baibuy.models.Product;
@@ -95,12 +96,16 @@ public class ViewController {
     }
 
     @GetMapping("/profile")
-    public String profilePage(Model model, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
+    public String profilePage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
 
-        model.addAttribute("user", loggedInUser);
-
-        return "Profile/profile";
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        
+        model.addAttribute("user", user);
+        return "profile/prof";
     }
 
     @GetMapping("/products/{id}")
@@ -125,7 +130,6 @@ public class ViewController {
                 creator.get().getEmail().equals(principal.getName());
         model.addAttribute("canEdit", canEdit);
 
-        // ✅ Get distinct message senders if user is the seller
         if (canEdit) {
             Set<User> messageSenders = messageRepository.findDistinctSendersByProductId(id);
             model.addAttribute("messageSenders", messageSenders);
@@ -137,57 +141,55 @@ public class ViewController {
         return "products/ShowProductDetails";
     }
 
-    @GetMapping("/profile")
-        public String userProfile(HttpSession session, Model model) {
-     User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-      if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
-         return "redirect:/auth/signin";
+    @GetMapping("/profile/address")
+    public String showAddressPage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
+        
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        
+        return "profile/address";
     }
 
-     model.addAttribute("user", loggedInUser); // So the view can use it
-
-        return "profile/prof"; // This points to /templates/Profile/prof.html
-    }
-  @GetMapping("/profile/address")
-    public String showAddressPage() {
-        return "profile/address"; // No .html extension, and path is relative to templates/
-    }
     @GetMapping("/profile/notif")
-public String showNotifPage(HttpSession session, Model model) {
-    User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-    if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
-        return "redirect:/auth/signin";
+    public String showNotifPage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
+        
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        
+        return "profile/notif";
     }
 
-    model.addAttribute("user", loggedInUser);
-    return "profile/notif"; // maps to templates/Profile/notif.html
-}
-
-@GetMapping("/profile/privacy")
-public String showPrivacyPage(HttpSession session, Model model) {
-    User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-    if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
-        return "redirect:/auth/signin";
+    @GetMapping("/profile/privacy")
+    public String showPrivacyPage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
+        
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        
+        return "profile/privacy";
     }
 
-    model.addAttribute("user", loggedInUser);
-    return "profile/privacy"; // maps to templates/Profile/privacy.html
-}
-@GetMapping("/profile/password")
-public String showPasswordPage(HttpSession session, Model model) {
-    User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-    if (loggedInUser == null || loggedInUser.getRole() != User.Role.USER) {
-        return "redirect:/auth/signin";
+    @GetMapping("/profile/password")
+    public String showPasswordPage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
+        
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        
+        return "profile/password";
     }
-
-    model.addAttribute("user", loggedInUser);
-    return "profile/password";           //   ↖─‑‑ name of the template (no .html)
-}
-    
-
-
 }

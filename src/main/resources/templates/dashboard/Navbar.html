@@ -20,6 +20,13 @@
         <i class="fas fa-shopping-cart"></i>
       </a>
 
+      <!-- Link to profile with profile image -->
+      <sec:authorize access="isAuthenticated()">
+        <a href="/profile" title="Profile" class="text-white">
+          <img src="/profile/USER1.png" alt="Profile" style="width: 30px; height: 30px; border-radius: 50%;" />
+        </a>
+      </sec:authorize>
+
       <sec:authorize access="isAuthenticated()">
         <a href="/auth/signout" title="Logout" class="text-white">
           <i class="fas fa-sign-out-alt"></i>
@@ -41,3 +48,4 @@
     }
   </script>
 </div>
+  
