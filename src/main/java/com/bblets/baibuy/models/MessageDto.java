@@ -7,4 +7,5 @@ public class MessageDto {
     private String content;
     private Integer productId;
     private Integer receiverId;
+    private String imageUrl;
 }

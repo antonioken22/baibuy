@@ -16,10 +16,12 @@ public interface ProductsRepository extends JpaRepository<Product, Integer> {
 
         Optional<Product> findByIdAndCreatedBy(Integer id, Integer userId);
 
-        Page<Product> findAllByIsListedTrueAndIsBlockedFalse(Pageable pageable);
+        Page<Product> findByBlockedTrue(Pageable pageable);
 
-        Page<Product> findByIsBlockedTrue(Pageable pageable);
+        Page<Product> findAllByIsListedTrueAndBlockedFalse(Pageable pageable);
 
         List<Product> findByIsListedTrue(Sort sort);
+
+        List<Product> findByCreatedBy(Integer createdBy);
 
 }
