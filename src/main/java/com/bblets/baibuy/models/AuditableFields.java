@@ -42,8 +42,16 @@ public abstract class AuditableFields {
     @Column(nullable = true)
     private Integer deletedBy;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
-    private boolean isBlocked;
+    @Column(name = "is_blocked", nullable = false)
+    private boolean blocked;
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
 
     @Column
     private LocalDateTime blockedAt;

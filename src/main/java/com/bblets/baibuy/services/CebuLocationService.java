@@ -464,4 +464,18 @@ public class CebuLocationService {
         public Map<String, List<String>> getAllCebuLocations() {
                 return cebuLocations;
         }
+
+        /**
+         * Finds the municipality or city that contains the given barangay.
+         *
+         * @param barangayName The barangay name to look for.
+         * @return The municipality/city name, or "Unknown" if not found.
+         */
+        public String getMunicipalityByBarangay(String barangayName) {
+                return cebuLocations.entrySet().stream()
+                                .filter(entry -> entry.getValue().contains(barangayName))
+                                .map(Map.Entry::getKey)
+                                .findFirst()
+                                .orElse("Unknown");
+        }
 }

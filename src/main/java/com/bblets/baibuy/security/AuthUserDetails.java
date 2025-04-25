@@ -15,6 +15,7 @@ public class AuthUserDetails implements UserDetails {
     private final String password;
     private final boolean isEnabled;
     private final Collection<? extends GrantedAuthority> authorities;
+    private final User.Role role;
 
     public AuthUserDetails(User user) {
         this.id = user.getId();
@@ -22,6 +23,7 @@ public class AuthUserDetails implements UserDetails {
         this.password = user.getPassword();
         this.isEnabled = !user.isBlocked();
         this.authorities = mapRolesToAuthorities(user.getRole());
+        this.role = user.getRole();
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(User.Role role) {
@@ -69,5 +71,9 @@ public class AuthUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnabled;
+    }
+
+    public User.Role getRole() {
+        return role;
     }
 }

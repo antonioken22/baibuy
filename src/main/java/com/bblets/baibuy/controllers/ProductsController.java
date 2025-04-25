@@ -5,6 +5,7 @@ import com.bblets.baibuy.models.Product.DeliveryPreference;
 import com.bblets.baibuy.models.Product.ProductCondition;
 import com.bblets.baibuy.models.ProductDto;
 import com.bblets.baibuy.repository.ProductsRepository;
+import com.bblets.baibuy.security.AuthUserDetails;
 import com.bblets.baibuy.services.CebuLocationService;
 import com.bblets.baibuy.services.FileStorageService;
 
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +23,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -49,8 +52,22 @@ public class ProductsController {
     // Product List (GET)
     @GetMapping({ "", "/" })
     public String showProductList(Model model) {
-        List<Product> products = productsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUserDetails userDetails = (AuthUserDetails) authentication.getPrincipal();
+
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        List<Product> products;
+
+        if (isAdmin) {
+            products = productsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        } else {
+            products = productsRepository.findByCreatedBy(userDetails.getId());
+        }
+
         model.addAttribute("products", products);
+        model.addAttribute("isAdmin", isAdmin);
         return "products/index";
     }
 
@@ -376,4 +393,33 @@ public class ProductsController {
                 .map(Map.Entry::getKey)
                 .findFirst();
     }
+
+    @GetMapping("/edit-blocked/{id}")
+    public String showEditBlockedPage(@PathVariable Integer id, Model model) {
+        Product product = findProductById(id);
+        model.addAttribute("product", product);
+        return "products/EditBlocked";
+    }
+
+    @PostMapping("/edit-blocked/{id}")
+    public String updateBlockedStatus(@PathVariable Integer id,
+            @RequestParam(name = "isBlocked", required = false) String isBlockedParam,
+            RedirectAttributes redirectAttributes) {
+        Product product = findProductById(id);
+        boolean isBlocked = isBlockedParam != null;
+        product.setBlocked(isBlocked);
+
+        if (isBlocked) {
+            product.setBlockedAt(LocalDateTime.now());
+            product.setBlockedBy(auditorAware.getCurrentAuditor().orElse(null));
+        } else {
+            product.setBlockedAt(null);
+            product.setBlockedBy(null);
+        }
+
+        productsRepository.save(product);
+        redirectAttributes.addFlashAttribute("successMessage", "Product block status updated.");
+        return "redirect:/products";
+    }
+
 }

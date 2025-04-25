@@ -8,12 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import com.bblets.baibuy.security.AuthUserDetails;
-
+import com.bblets.baibuy.services.CebuLocationService;
 import com.bblets.baibuy.models.Product;
 import com.bblets.baibuy.models.UserDto;
 import com.bblets.baibuy.models.User;
 import com.bblets.baibuy.repository.ProductsRepository;
 import com.bblets.baibuy.repository.UserRepository;
+import com.bblets.baibuy.repository.MessageRepository;
 
 import java.security.Principal;
 import java.util.LinkedHashSet;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.Optional;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -32,6 +34,12 @@ public class ViewController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CebuLocationService cebuLocationService;
+
+    @Autowired
+    private MessageRepository messageRepository;
 
     @GetMapping("/")
     public String redirectToLanding() {
@@ -61,14 +69,27 @@ public class ViewController {
             return "redirect:/auth/signin";
         }
 
-        List<Product> products = productsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        List<Product> allProducts = productsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 
-        Set<String> categories = products.stream()
+        List<Product> otherProducts = allProducts.stream()
+                .filter(product -> !product.getCreatedBy().equals(authUser.getId()) &&
+                        Boolean.TRUE.equals(product.getIsListed()) &&
+                        !Boolean.TRUE.equals(product.isBlocked()))
+                .collect(Collectors.toList());
+
+        Set<String> categories = otherProducts.stream()
                 .map(Product::getCategory)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        model.addAttribute("products", products);
+        Map<String, List<String>> groupedBarangays = cebuLocationService.getAllCebuLocations();
+        var productMunicipalities = otherProducts.stream()
+                .collect(Collectors.toMap(
+                        Product::getId,
+                        p -> cebuLocationService.getMunicipalityByBarangay(p.getBarangayName())));
+
+        model.addAttribute("products", otherProducts);
         model.addAttribute("categories", categories);
+        model.addAttribute("productMunicipalities", productMunicipalities);
 
         return "dashboard/UserDashboard";
     }
@@ -95,14 +116,22 @@ public class ViewController {
             }
         }
 
+        String municipalityName = cebuLocationService.getMunicipalityByBarangay(product.getBarangayName());
         model.addAttribute("product", product);
         model.addAttribute("createdByFullName", createdByName);
-        model.addAttribute("canEdit", principal != null
-                && creator.isPresent()
-                && creator.get().getEmail().equals(principal.getName()));
+        model.addAttribute("municipalityName", municipalityName);
 
-        if (principal != null && creator.isPresent() && creator.get().getEmail().equals(principal.getName())) {
-            model.addAttribute("canEdit", true);
+        boolean canEdit = principal != null && creator.isPresent() &&
+                creator.get().getEmail().equals(principal.getName());
+        model.addAttribute("canEdit", canEdit);
+
+        // ✅ Get distinct message senders if user is the seller
+        if (canEdit) {
+            Set<User> messageSenders = messageRepository.findDistinctSendersByProductId(id);
+            model.addAttribute("messageSenders", messageSenders);
+            model.addAttribute("isSeller", true);
+        } else {
+            model.addAttribute("isSeller", false);
         }
 
         return "products/ShowProductDetails";

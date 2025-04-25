@@ -3,16 +3,28 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content rounded-4 shadow-sm">
         <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="chatModalLabel">
-            <i class="fas fa-comments me-2"></i>Message Seller
+          <h5 class="modal-title font-aclonica" id="chatModalLabel">
+            <i class="fas fa-comments me-2"></i>Messages
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <!-- Chat Thread -->
         <div class="modal-body p-4">
-          <div id="chatThread" class="chat-thread-container">
+          <!-- Chat Thread Display -->
+          <div id="chatThread" class="chat-thread-container mb-3">
             <div class="text-muted">Loading messages...</div>
+          </div>
+
+          <!-- Sender Dropdown (For Seller) -->
+          <div th:if="${isSeller}" class="mb-3">
+            <label for="selectedSenderId" class="form-label">Select Sender</label>
+            <select class="form-select" id="selectedSenderId" onchange="loadChatThread()">
+              <option value="">-- Select sender --</option>
+              <option th:each="sender : ${messageSenders}"
+                      th:value="${sender.id}"
+                      th:text="${sender.firstName + ' ' + sender.lastName}">
+              </option>
+            </select>
           </div>
 
           <!-- Message Input -->
@@ -40,14 +52,18 @@
   <script th:inline="javascript">
     async function loadChatThread() {
       const productId = document.getElementById('productId').value;
+      const selectedSenderId = document.getElementById('selectedSenderId')?.value || '';
       const currentUserId = parseInt(document.getElementById('currentUserId').value);
       const chatBox = document.getElementById('chatThread');
 
       chatBox.innerHTML = '<div class="text-muted">Loading messages...</div>';
 
       try {
-        const res = await fetch(`/api/messages/thread/${productId}`);
+        const res = await fetch(`/api/messages/thread/${productId}?senderId=${selectedSenderId}`);
         const data = await res.json();
+        console.log("Fetched messages:", data);
+
+        chatBox.innerHTML = '';
 
         chatBox.innerHTML = '';
         if (data.length === 0) {
@@ -66,7 +82,7 @@
           if (!isSelf) {
             const avatar = document.createElement('img');
             avatar.className = 'chat-avatar';
-            avatar.src = '/images/default-avatar.png';
+            avatar.src = '/images/sample-avatar.png';
             avatar.alt = 'Avatar';
             messageRow.appendChild(avatar);
           }
@@ -92,29 +108,33 @@
         chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
       } catch (err) {
         chatBox.innerHTML = '<div class="text-danger">Failed to load messages.</div>';
-        console.error(err);
+        console.error("Chat load error:", err);
       }
     }
 
     async function sendMessage() {
       const content = document.getElementById("messageContent").value.trim();
-      const receiverId = document.getElementById("receiverId").value;
+      let receiverId = document.getElementById("receiverId").value;
+      const selectedSenderId = document.getElementById("selectedSenderId")?.value;
+
+      if (selectedSenderId) {
+        receiverId = selectedSenderId;
+      }
+
       const productId = document.getElementById("productId").value;
 
       if (!content) {
         alert("Please enter a message.");
         return;
       }
-
       const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
       const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
       try {
         const res = await fetch('/api/messages/send', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            [csrfHeader]: csrfToken
+            ...(csrfHeader && csrfToken ? { [csrfHeader]: csrfToken } : {})
           },
           body: JSON.stringify({ content, receiverId, productId })
         });
@@ -132,10 +152,18 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      const modalEl = document.getElementById('chatModal');
-      if (modalEl) {
-        modalEl.addEventListener('show.bs.modal', loadChatThread);
+  const modalEl = document.getElementById('chatModal');
+  if (modalEl) {
+    modalEl.addEventListener('show.bs.modal', () => {
+      const senderDropdown = document.getElementById('selectedSenderId');
+      if (senderDropdown && senderDropdown.options.length === 2) {
+        // Only one sender (1 default + 1 sender)
+        senderDropdown.selectedIndex = 1;
       }
+      loadChatThread();
     });
+  }
+});
+
   </script>
 </div>
