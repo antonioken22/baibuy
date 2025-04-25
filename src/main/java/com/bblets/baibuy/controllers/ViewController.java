@@ -111,5 +111,18 @@ public class ViewController {
     model.addAttribute("user", loggedInUser);
     return "Profile/privacy"; 
     }
+    
+    @GetMapping("/address")
+    public String addressPage(Model model, HttpSession session) {
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+    if (loggedInUser == null) {
+        return "redirect:/login"; 
+    }
+
+    model.addAttribute("user", loggedInUser);
+    return "Profile/address"; 
+}
+
 
 }

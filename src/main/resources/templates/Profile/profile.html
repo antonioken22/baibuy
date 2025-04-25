@@ -6,39 +6,14 @@
   <title>Profile Settings</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="/Profile/sidebar.css"> <!-- ✅ updated path -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
     body {
       background-color: #f5f6fa;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-    }
-
-    .header {
-      margin-left: 60px;
-      background-color: #3B1398;
-      color: white;
-      padding: 15px 30px;
-      font-size: 1.5rem;
-      font-weight: bold;
-      transition: margin-left 0.3s ease;
-    }
-
-    .sidebar:hover ~ .header {
-      margin-left: 160px;
-    }
-
-    .header .right-section {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .search-bar {
-      border-radius: 10px;
-      border: none;
-      padding: 5px 15px;
-      width: 250px;
+      padding-top: 80px; /* ✅ added to prevent navbar overlap */
     }
 
     .content {
@@ -56,8 +31,8 @@
     }
 
     .profile-card {
-      background: linear-gradient(to right, #d8c6f1, #5731d4);
-      color: white;
+      background: linear-gradient(to right, #FFFFFF, #3B1398);
+      color: #000000;
       border-radius: 12px;
       padding: 30px;
       display: flex;
@@ -77,15 +52,6 @@
       height: 70px;
       border-radius: 50%;
       object-fit: cover;
-    }
-
-    .edit-btn {
-      background-color: white;
-      color: #3B1398;
-      border: none;
-      padding: 10px 25px;
-      border-radius: 25px;
-      font-weight: bold;
     }
 
     .form-card {
@@ -127,33 +93,143 @@
       font-size: 0.875rem;
       color: gray;
     }
+
+    /* BAI Navbar */
+    .bai-navbar {
+      background-color: #3B1398;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      padding: 12px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .bai-logo {
+      font-family: 'Aclonica', sans-serif;
+      font-size: 30;
+      font-weight: bold;
+    }
+
+    .bai-search {
+      flex-grow: 1;
+      margin: 0 20px;
+      display: none;
+    }
+
+    .bai-search input {
+      width: 100%;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .bai-search.active {
+      display: block;
+    }
+
+    .bai-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .bai-actions a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.3s ease;
+    }
+
+    .bai-actions a:hover {
+      opacity: 0.85;
+    }
+
+    .bai-actions i {
+      font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .bai-navbar {
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .bai-search {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        margin: 0 20px;
+      }
+
+      .bai-search input {
+        width: 100%;
+        max-width: 300px;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .bai-actions {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 16px;
+      }
+    }
   </style>
+
+  <script>
+    function toggleSearch() {
+      const searchBox = document.getElementById('searchBox');
+      searchBox.classList.toggle('active');
+    }
+  </script>
 </head>
 <body>
+
+  <!-- BAI Navbar -->
+  <div class="bai-navbar">
+    <div class="bai-logo">BAI BUY</div>
+
+    <div class="bai-search" id="searchBox">
+      <input type="text" placeholder="Search for products..." />
+    </div>
+
+    <div class="bai-actions">
+      <a href="javascript:void(0);" onclick="toggleSearch()" title="Search">
+        <i class="fas fa-search"></i>
+      </a>
+      <a href="/cart" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+      <a href="/auth/signout" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+  </div>
 
   <!-- Sidebar include -->
   <div id="sidebar-container"></div>
   <script>
-    fetch("/Profile/sidebar.html") // ✅ updated path
+    fetch("/Profile/sidebar.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("sidebar-container").innerHTML = data;
       });
   </script>
 
-  <!-- Header -->
-  <div class="header d-flex justify-content-between align-items-center">
-    <div>BAI BUY</div>
-    <div class="right-section">
-      <input type="text" class="search-bar" placeholder="Search" />
-      <img src="/profile/bell.png" width="20" alt="Notifications" />
-    </div>
-  </div>
-
   <!-- Content -->
   <div class="content">
     <div class="greeting">
-      <p class="mb-1">Welcome, Amanda</p>
+      <p class="mb-1">Welcome, Nixele</p>
       <p class="text-muted-small">Tue, 07 June 2022</p>
     </div>
 
@@ -161,11 +237,10 @@
       <div class="profile-info">
         <img src="/profile/3.png" alt="Profile" class="profile-img" />
         <div>
-          <h5 class="mb-0">Alexa Rawles</h5>
-          <p class="mb-0">alexarawles@gmail.com</p>
+          <h5 class="mb-0">Robb Nixele Adlaon</h5>
+          <p class="mb-0">robbnixele.adlaon@gmail.com</p>
         </div>
       </div>
-      <button class="edit-btn">Edit</button>
     </div>
 
     <div class="form-card">
