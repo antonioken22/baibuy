@@ -1,0 +1,169 @@
+<div th:fragment="chatModal(product)">
+  <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content rounded-4 shadow-sm">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title font-aclonica" id="chatModalLabel">
+            <i class="fas fa-comments me-2"></i>Messages
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <!-- Chat Thread Display -->
+          <div id="chatThread" class="chat-thread-container mb-3">
+            <div class="text-muted">Loading messages...</div>
+          </div>
+
+          <!-- Sender Dropdown (For Seller) -->
+          <div th:if="${isSeller}" class="mb-3">
+            <label for="selectedSenderId" class="form-label">Select Sender</label>
+            <select class="form-select" id="selectedSenderId" onchange="loadChatThread()">
+              <option value="">-- Select sender --</option>
+              <option th:each="sender : ${messageSenders}"
+                      th:value="${sender.id}"
+                      th:text="${sender.firstName + ' ' + sender.lastName}">
+              </option>
+            </select>
+          </div>
+
+          <!-- Message Input -->
+          <div class="mb-3">
+            <label for="messageContent" class="form-label">Your Message</label>
+            <textarea class="form-control" id="messageContent" rows="3"
+                      placeholder="Type your message here..." required></textarea>
+
+            <!-- Hidden Fields -->
+            <input type="hidden" id="receiverId" th:value="${product.createdBy}" />
+            <input type="hidden" id="productId" th:value="${product.id}" />
+            <input type="hidden" id="currentUserId" th:value="${#authentication.principal.id}" />
+          </div>
+        </div>
+
+        <div class="modal-footer border-0 px-4 pb-4">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="sendMessage()">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Logic -->
+  <script th:inline="javascript">
+    async function loadChatThread() {
+      const productId = document.getElementById('productId').value;
+      const selectedSenderId = document.getElementById('selectedSenderId')?.value || '';
+      const currentUserId = parseInt(document.getElementById('currentUserId').value);
+      const chatBox = document.getElementById('chatThread');
+
+      chatBox.innerHTML = '<div class="text-muted">Loading messages...</div>';
+
+      try {
+        const res = await fetch(`/api/messages/thread/${productId}?senderId=${selectedSenderId}`);
+        const data = await res.json();
+        console.log("Fetched messages:", data);
+
+        chatBox.innerHTML = '';
+
+        chatBox.innerHTML = '';
+        if (data.length === 0) {
+          chatBox.innerHTML = '<div class="text-muted">No messages yet.</div>';
+          return;
+        }
+
+        data.forEach(msg => {
+          const isSelf = msg.senderId === currentUserId;
+          const wrapper = document.createElement('div');
+          wrapper.className = `chat-message-wrapper ${isSelf ? 'self' : 'other'}`;
+
+          const messageRow = document.createElement('div');
+          messageRow.className = 'chat-message';
+
+          if (!isSelf) {
+            const avatar = document.createElement('img');
+            avatar.className = 'chat-avatar';
+            avatar.src = '/images/sample-avatar.png';
+            avatar.alt = 'Avatar';
+            messageRow.appendChild(avatar);
+          }
+
+          const bubble = document.createElement('div');
+          bubble.className = `chat-bubble ${isSelf ? 'self-bubble' : 'other-bubble'} fade-in`;
+          bubble.textContent = msg.content;
+
+          messageRow.appendChild(bubble);
+
+          const timestamp = document.createElement('div');
+          timestamp.className = 'chat-timestamp';
+          timestamp.textContent = new Date(msg.sentAt).toLocaleString(undefined, {
+            dateStyle: "medium",
+            timeStyle: "short"
+          });
+
+          wrapper.appendChild(messageRow);
+          wrapper.appendChild(timestamp);
+          chatBox.appendChild(wrapper);
+        });
+
+        chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
+      } catch (err) {
+        chatBox.innerHTML = '<div class="text-danger">Failed to load messages.</div>';
+        console.error("Chat load error:", err);
+      }
+    }
+
+    async function sendMessage() {
+      const content = document.getElementById("messageContent").value.trim();
+      let receiverId = document.getElementById("receiverId").value;
+      const selectedSenderId = document.getElementById("selectedSenderId")?.value;
+
+      if (selectedSenderId) {
+        receiverId = selectedSenderId;
+      }
+
+      const productId = document.getElementById("productId").value;
+
+      if (!content) {
+        alert("Please enter a message.");
+        return;
+      }
+      const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+      const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+      try {
+        const res = await fetch('/api/messages/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(csrfHeader && csrfToken ? { [csrfHeader]: csrfToken } : {})
+          },
+          body: JSON.stringify({ content, receiverId, productId })
+        });
+
+        if (res.ok) {
+          document.getElementById("messageContent").value = "";
+          await loadChatThread();
+        } else {
+          alert("Failed to send message.");
+        }
+      } catch (err) {
+        console.error("Sending failed", err);
+        alert("An error occurred while sending.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const modalEl = document.getElementById('chatModal');
+  if (modalEl) {
+    modalEl.addEventListener('show.bs.modal', () => {
+      const senderDropdown = document.getElementById('selectedSenderId');
+      if (senderDropdown && senderDropdown.options.length === 2) {
+        // Only one sender (1 default + 1 sender)
+        senderDropdown.selectedIndex = 1;
+      }
+      loadChatThread();
+    });
+  }
+});
+
+  </script>
+</div>
