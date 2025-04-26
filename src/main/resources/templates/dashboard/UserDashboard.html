@@ -87,100 +87,77 @@
       </div>
     </div>
 
-    <!-- Sell or View Product Buttons -->
-    <div class="container my-4 d-flex gap-3 justify-content-center">
-      <a href="/products" class="btn btn-primary">
-        <i class="fas fa-store"></i> Manage Your Products
-      </a>
-      <a href="/products/create" class="btn btn-primary">
-        <i class="fas fa-plus-circle"></i> Sell Your Product
-      </a>
+  <!-- Sell or View Product Buttons -->
+  <div class="container my-4 d-flex gap-3 justify-content-center">
+    <a href="/products" class="btn btn-primary">
+      <i class="fas fa-store"></i> Manage Your Products
+    </a>
+    <a href="/products/create" class="btn btn-primary">
+      <i class="fas fa-plus-circle"></i> Sell Your Product
+    </a>
+  </div>
+
+
+  <div class="container" id="products">
+    <div class="filter-container mb-4">
+      <div class="row g-3 align-items-center flex-wrap">
+        <!-- Search Location -->
+        <div class="col-md-6 d-flex align-items-center gap-2">
+          <label for="locationSearch" class="form-label mb-0 text-nowrap">Search Location (Barangay or City):</label>
+          <input type="text" id="locationSearch" class="form-control" placeholder="Ex: Langtad or NAGA CITY" oninput="filterByLocation()" />
+        </div>
+    
+        <!-- Filter by Category -->
+        <div class="col-md-6 d-flex align-items-center gap-2">
+          <label for="categoryFilter" class="form-label mb-0 text-nowrap">Filter by Category:</label>
+          <select id="categoryFilter" class="form-select" onchange="filterByCategory()">
+            <option value="all">All</option>
+            <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+          </select>
+        </div>
+      </div>
     </div>
-
-    <div class="container" id="products">
-      <div class="filter-container mb-4">
-        <div class="row g-3 align-items-center flex-wrap">
-          <!-- Search Location -->
-          <div class="col-md-6 d-flex align-items-center gap-2">
-            <label for="locationSearch" class="form-label mb-0 text-nowrap"
-              >Search Location (Barangay or City):</label
-            >
-            <input
-              type="text"
-              id="locationSearch"
-              class="form-control"
-              placeholder="Ex: Langtad or NAGA CITY"
-              oninput="filterByLocation()"
-            />
-          </div>
-
-          <!-- Filter by Category -->
-          <div class="col-md-6 d-flex align-items-center gap-2">
-            <label for="categoryFilter" class="form-label mb-0 text-nowrap"
-              >Filter by Category:</label
-            >
-            <select
-              id="categoryFilter"
-              class="form-select"
-              onchange="filterByCategory()"
-            >
-              <option value="all">All</option>
-              <option
-                th:each="category : ${categories}"
-                th:value="${category}"
-                th:text="${category}"
-              ></option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title font-aclonica">All Products</h2>
-      <div class="row" th:if="${products.size() > 0}" id="productGrid">
-        <div
-          class="col-md-3 mb-4"
-          th:each="product : ${products}"
-          th:attr="data-category=${product.category}, data-barangay=${product.barangayName}, data-city=${productMunicipalities[product.id]}"
-        >
-          <a
-            th:href="@{'/products/' + ${product.id}}"
-            style="text-decoration: none; color: inherit"
-          >
-            <div class="product-card">
-              <img
-                th:src="${#lists.isEmpty(product.imageUrls)} ? '/images/placeholder.jpg' : @{${product.imageUrls[0]}}"
-                alt="Product Image"
-                class="product-img"
-              />
-              <div class="product-info">
-                <h5 th:text="${product.name}"></h5>
-                <p class="mb-1 text-muted" th:text="${product.brand}"></p>
-                <p class="mb-1">
-                  <span th:text="${product.barangayName}"></span>,
-                  <span th:text="${productMunicipalities[product.id]}"></span>
-                </p>
-                <p class="mb-1"><span th:text="${product.category}"></span></p>
-                <div class="rating">
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star-half-alt"></i>
-                  <i class="far fa-star"></i>
-                </div>
-                <div>
-                  <span class="price"
-                    >Php <span th:text="${product.price}"></span
-                  ></span>
-                </div>
-                <small
-                  class="text-muted"
-                  th:text="${#temporals.format(product.createdAt, 'MMM dd, yyyy h:mm a')}"
-                ></small>
+        
+    <h2 class="section-title font-aclonica">All Products</h2>
+    <div class="row" th:if="${products.size() > 0}" id="productGrid">
+      <div class="col-md-3 mb-4"
+     th:each="product : ${products}"
+     th:attr="data-category=${product.category}, data-barangay=${product.barangayName}, data-city=${productMunicipalities[product.id]}">
+        <a th:href="@{'/products/' + ${product.id}}" style="text-decoration: none; color: inherit;">
+          <div class="product-card">
+            <img th:src="${#lists.isEmpty(product.imageUrls)} ? '/images/placeholder.jpg' : @{${product.imageUrls[0]}}" alt="Product Image" class="product-img" />
+            <div class="product-info">
+              <h5 th:text="${product.name}"></h5>
+              <p class="mb-1 text-muted" th:text="${product.brand}"></p>
+              <p class="mb-1">
+                <span th:text="${product.barangayName}"></span>,
+                <span th:text="${productMunicipalities[product.id]}"></span>
+              </p> 
+              <p class="mb-1"><span th:text="${product.category}"></span></p>
+              <div class="rating">
+                <th:block th:each="i : ${#numbers.sequence(1,5)}">
+                  <i class="fas fa-star"
+                     th:classappend="${i <= (productAvgRatings[product.id] != null ? productAvgRatings[product.id] : 0)} ? 'text-warning' : 'text-secondary'"></i>
+                </th:block>
+                <small class="text-muted" th:if="${productAvgRatings[product.id] != null}" th:text="'(' + ${#numbers.formatDecimal(productAvgRatings[product.id], 1, 1)} + ')'"></small>
               </div>
+              <div class="mb-1">
+                <i class="fas fa-shopping-bag me-1 text-success"></i>
+                <small class="text-muted">
+                  Sold:
+                  <span th:text="${soldCounts[product.id] != null ? soldCounts[product.id] : 0}">0</span> item(s)
+                </small>
+              </div>
+              
+              <div>
+                <span class="price">Php <span th:text="${product.price}"></span></span>
+              </div>             
+              <small class="text-muted" th:text="${#temporals.format(product.createdAt, 'MMM dd, yyyy h:mm a')}"></small>
             </div>
-          </a>
-        </div>
-      </div>
+          </div>
+        </a>
+      </div>      
+    </div>
 
       <div
         th:if="${products.size() == 0}"
@@ -206,31 +183,46 @@
       </div>
     </div>
 
-    <!-- <div class="container mt-5">
-    <h2 class="section-title font-aclonica">Top Selling</h2>
-    <div class="row">
-      <div class="col-md-3 mb-4" th:each="product : ${products}" th:if="${product.price < 200}">
-        <a th:href="@{'/products/' + ${product.id}}" style="text-decoration: none; color: inherit;">
-          <div class="product-card">
-            <img th:src="${#lists.isEmpty(product.imageUrls)} ? '/images/placeholder.jpg' : @{${product.imageUrls[0]}}" alt="Product Image" class="product-img" />
-            <div class="product-info">
-              <h5 th:text="${product.name}"></h5>
-              <p class="mb-1 text-muted" th:text="${product.brand}"></p>
-              <p class="mb-1"><span th:text="${product.category}"></span></p>
-              <div class="rating">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <i class="far fa-star"></i>
-              </div>
-              <span class="price">Php <span th:text="${product.price}"></span></span>
+  <!-- Top Selling Section -->
+<div class="container mt-5" th:if="${topSellingProducts.size() > 0}">
+  <h2 class="section-title font-aclonica">Top Selling</h2>
+  <div class="row">
+    <div class="col-md-3 mb-4"
+         th:each="product : ${topSellingProducts}">
+      <a th:href="@{'/products/' + ${product.id}}" style="text-decoration: none; color: inherit;">
+        <div class="product-card">
+          <img th:src="${#lists.isEmpty(product.imageUrls)} ? '/images/placeholder.jpg' : @{${product.imageUrls[0]}}" alt="Product Image" class="product-img" />
+          <div class="product-info">
+            <h5 th:text="${product.name}"></h5>
+            <p class="mb-1 text-muted" th:text="${product.brand}"></p>
+            <p class="mb-1"><span th:text="${product.category}"></span></p>
+
+            <!-- Rating -->
+            <div class="rating">
+              <th:block th:each="i : ${#numbers.sequence(1,5)}">
+                <i class="fas fa-star"
+                   th:classappend="${i <= (productAvgRatings[product.id] != null ? productAvgRatings[product.id] : 0)} ? 'text-warning' : 'text-secondary'"></i>
+              </th:block>
+              <small class="text-muted" th:if="${productAvgRatings[product.id] != null}" th:text="'(' + ${#numbers.formatDecimal(productAvgRatings[product.id], 1, 1)} + ')'"></small>
             </div>
+
+            <!-- Sold Count -->
+            <div class="mb-1">
+              <i class="fas fa-shopping-bag me-1 text-success"></i>
+              <small class="text-muted">
+                Sold:
+                <span th:text="${soldCounts[product.id]}">0</span> item(s)
+              </small>
+            </div>
+
+            <!-- Price -->
+            <span class="price">Php <span th:text="${product.price}"></span></span>
           </div>
-        </a>        
-      </div>
+        </div>
+      </a>        
     </div>
-  </div> -->
+  </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
