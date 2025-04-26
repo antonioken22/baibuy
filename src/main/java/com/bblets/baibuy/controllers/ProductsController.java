@@ -4,10 +4,15 @@ import com.bblets.baibuy.models.Product;
 import com.bblets.baibuy.models.Product.DeliveryPreference;
 import com.bblets.baibuy.models.Product.ProductCondition;
 import com.bblets.baibuy.models.ProductDto;
+import com.bblets.baibuy.models.Report;
 import com.bblets.baibuy.repository.ProductsRepository;
+import com.bblets.baibuy.repository.TransactionRecordRepository;
+import com.bblets.baibuy.repository.UserRepository;
 import com.bblets.baibuy.security.AuthUserDetails;
 import com.bblets.baibuy.services.CebuLocationService;
 import com.bblets.baibuy.services.FileStorageService;
+import com.bblets.baibuy.services.ReportService;
+import com.bblets.baibuy.services.ReviewService;
 
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -48,6 +53,8 @@ public class ProductsController {
     private AuditorAware<Integer> auditorAware;
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private ReportService reportService;
 
     // Product List (GET)
     @GetMapping({ "", "/" })
@@ -420,6 +427,19 @@ public class ProductsController {
         productsRepository.save(product);
         redirectAttributes.addFlashAttribute("successMessage", "Product block status updated.");
         return "redirect:/products";
+    }
+
+    @GetMapping("/reports")
+    public String viewReports(Model model) {
+        List<Report> reports = reportService.getAllReports();
+        model.addAttribute("reports", reports);
+        return "products/ReportsList";
+    }
+
+    @PostMapping("/reports/mark-reviewed")
+    public String markReportAsReviewed(@RequestParam() Integer reportId) {
+        reportService.markAsReviewed(reportId);
+        return "redirect:/products/reports";
     }
 
 }
