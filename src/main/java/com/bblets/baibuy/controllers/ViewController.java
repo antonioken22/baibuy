@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.bblets.baibuy.security.AuthUserDetails;
 import com.bblets.baibuy.services.CebuLocationService;
 import com.bblets.baibuy.services.ReviewService;
@@ -131,12 +132,16 @@ public class ViewController {
     }
 
     @GetMapping("/profile")
-    public String profilePage(Model model, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
+    public String profilePage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
 
-        model.addAttribute("user", loggedInUser);
-
-        return "Profile/profile";
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        
+        model.addAttribute("user", user);
+        return "profile/profile";
     }
 
     @GetMapping("/products/{id}")
@@ -301,5 +306,56 @@ public class ViewController {
         reportRepository.save(report);
 
         return "redirect:/dashboard";
+    }
+    @GetMapping("/profile/address")
+    public String showAddressPage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
+        
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        
+        return "profile/address";
+    }
+
+    @GetMapping("/profile/notif")
+    public String showNotifPage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
+        
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        
+        return "profile/notif";
+    }
+
+    @GetMapping("/profile/privacy")
+    public String showPrivacyPage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
+        
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        
+        return "profile/privacy";
+    }
+
+    @GetMapping("/profile/password")
+    public String showPasswordPage(@AuthenticationPrincipal AuthUserDetails authUser, Model model) {
+        if (authUser == null) {
+            return "redirect:/auth/signin";
+        }
+        
+        User user = userRepository.findByEmail(authUser.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        model.addAttribute("user", user);
+        
+        return "profile/password";
     }
 }
