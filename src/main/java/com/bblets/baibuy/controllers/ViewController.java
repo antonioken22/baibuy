@@ -105,7 +105,7 @@ public class ViewController {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         
         model.addAttribute("user", user);
-        return "profile/prof";
+        return "profile/profile";
     }
 
     @GetMapping("/products/{id}")
