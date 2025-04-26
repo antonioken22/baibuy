@@ -1,133 +1,212 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Dashboard - BaiBuy</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard - BaiBuy</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Aclonica&family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" th:href="@{/css/baibuy-theme.css}" />
-</head>
-<body>
-  <div th:replace="dashboard/Navbar :: baiHeader"></div>
-  <div style="padding-top: 80px;"></div>
+    <link rel="stylesheet" th:href="@{/css/baibuy-theme.css}" />
+  </head>
+  <body>
+    <div th:replace="dashboard/Navbar :: baiHeader"></div>
+    <div style="padding-top: 80px"></div>
 
-  <div class="hero-section">
-    <h1>Find Products That Match Your Lifestyle</h1>
-    <p>Browse our diverse range of meticulously curated items.</p>
-    <p>Each one is crafted to meet your everyday needs and reflect your unique style, from fashion and gadgets to home essentials and more.</p>
-    <a href="#products" class="btn">Shop Now</a>
-    <button class="btn btn-outline-light ms-2" data-bs-toggle="modal" data-bs-target="#nearMeModal">
-      Near Me
-    </button>
-  </div>
-
-  <!-- Near Me Modal -->
-<div class="modal fade" id="nearMeModal" tabindex="-1" aria-labelledby="nearMeLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3">
-      <div class="modal-header">
-        <h5 class="modal-title font-aclonica" id="nearMeLabel">Find Products Near You</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <label for="nearMeInput" class="form-label">Enter your Barangay or City:</label>
-        <input type="text" id="nearMeInput" class="form-control" placeholder="e.g., Langtad or NAGA CITY" />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="handleNearMe()">Explore Now</button>
-      </div>
+    <div class="hero-section">
+      <h1>Find Products That Match Your Lifestyle</h1>
+      <p>Browse our diverse range of meticulously curated items.</p>
+      <p>
+        Each one is crafted to meet your everyday needs and reflect your unique
+        style, from fashion and gadgets to home essentials and more.
+      </p>
+      <a href="#products" class="btn">Shop Now</a>
+      <button
+        class="btn btn-outline-light ms-2"
+        data-bs-toggle="modal"
+        data-bs-target="#nearMeModal"
+      >
+        Near Me
+      </button>
     </div>
-  </div>
-</div>
 
-  <!-- Sell or View Product Buttons -->
-  <div class="container my-4 d-flex gap-3 justify-content-center">
-    <a href="/products" class="btn btn-primary">
-      <i class="fas fa-store"></i> Manage Your Products
-    </a>
-    <a href="/products/create" class="btn btn-primary">
-      <i class="fas fa-plus-circle"></i> Sell Your Product
-    </a>
-  </div>
-
-
-  <div class="container" id="products">
-    <div class="filter-container mb-4">
-      <div class="row g-3 align-items-center flex-wrap">
-        <!-- Search Location -->
-        <div class="col-md-6 d-flex align-items-center gap-2">
-          <label for="locationSearch" class="form-label mb-0 text-nowrap">Search Location (Barangay or City):</label>
-          <input type="text" id="locationSearch" class="form-control" placeholder="Ex: Langtad or NAGA CITY" oninput="filterByLocation()" />
-        </div>
-    
-        <!-- Filter by Category -->
-        <div class="col-md-6 d-flex align-items-center gap-2">
-          <label for="categoryFilter" class="form-label mb-0 text-nowrap">Filter by Category:</label>
-          <select id="categoryFilter" class="form-select" onchange="filterByCategory()">
-            <option value="all">All</option>
-            <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
-          </select>
-        </div>
-      </div>
-    </div>
-        
-    <h2 class="section-title font-aclonica">All Products</h2>
-    <div class="row" th:if="${products.size() > 0}" id="productGrid">
-      <div class="col-md-3 mb-4"
-     th:each="product : ${products}"
-     th:attr="data-category=${product.category}, data-barangay=${product.barangayName}, data-city=${productMunicipalities[product.id]}">
-        <a th:href="@{'/products/' + ${product.id}}" style="text-decoration: none; color: inherit;">
-          <div class="product-card">
-            <img th:src="${#lists.isEmpty(product.imageUrls)} ? '/images/placeholder.jpg' : @{${product.imageUrls[0]}}" alt="Product Image" class="product-img" />
-            <div class="product-info">
-              <h5 th:text="${product.name}"></h5>
-              <p class="mb-1 text-muted" th:text="${product.brand}"></p>
-              <p class="mb-1">
-                <span th:text="${product.barangayName}"></span>,
-                <span th:text="${productMunicipalities[product.id]}"></span>
-              </p> 
-              <p class="mb-1"><span th:text="${product.category}"></span></p>
-              <div class="rating">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <i class="far fa-star"></i>
-              </div>
-              <div>
-                <span class="price">Php <span th:text="${product.price}"></span></span>
-              </div>             
-              <small class="text-muted" th:text="${#temporals.format(product.createdAt, 'MMM dd, yyyy h:mm a')}"></small>
-            </div>
+    <!-- Near Me Modal -->
+    <div
+      class="modal fade"
+      id="nearMeModal"
+      tabindex="-1"
+      aria-labelledby="nearMeLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title font-aclonica" id="nearMeLabel">
+              Find Products Near You
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-        </a>
-      </div>      
-    </div>
-
-    <div th:if="${products.size() == 0}" class="alert alert-info text-center font-aclonica">
-      No products available at the moment.
-    </div>
-  </div>
-
-  <!-- Near You Section -->
-  <div class="container mt-5 d-none" id="nearYouSectionWrapper">
-    <div id="nearYouSection">
-      <h2 class="section-title font-aclonica">Near You</h2>
-      <div class="row" id="nearYouGrid">
-        <!-- Products will be cloned here dynamically via JS -->
+          <div class="modal-body">
+            <label for="nearMeInput" class="form-label"
+              >Enter your Barangay or City:</label
+            >
+            <input
+              type="text"
+              id="nearMeInput"
+              class="form-control"
+              placeholder="e.g., Langtad or NAGA CITY"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="handleNearMe()"
+            >
+              Explore Now
+            </button>
+          </div>
+        </div>
       </div>
-      <div id="noNearYouFound" class="alert alert-warning text-center d-none font-aclonica">
-        No nearby products found based on your input.
+    </div>
+
+    <!-- Sell or View Product Buttons -->
+    <div class="container my-4 d-flex gap-3 justify-content-center">
+      <a href="/products" class="btn btn-primary">
+        <i class="fas fa-store"></i> Manage Your Products
+      </a>
+      <a href="/products/create" class="btn btn-primary">
+        <i class="fas fa-plus-circle"></i> Sell Your Product
+      </a>
+    </div>
+
+    <div class="container" id="products">
+      <div class="filter-container mb-4">
+        <div class="row g-3 align-items-center flex-wrap">
+          <!-- Search Location -->
+          <div class="col-md-6 d-flex align-items-center gap-2">
+            <label for="locationSearch" class="form-label mb-0 text-nowrap"
+              >Search Location (Barangay or City):</label
+            >
+            <input
+              type="text"
+              id="locationSearch"
+              class="form-control"
+              placeholder="Ex: Langtad or NAGA CITY"
+              oninput="filterByLocation()"
+            />
+          </div>
+
+          <!-- Filter by Category -->
+          <div class="col-md-6 d-flex align-items-center gap-2">
+            <label for="categoryFilter" class="form-label mb-0 text-nowrap"
+              >Filter by Category:</label
+            >
+            <select
+              id="categoryFilter"
+              class="form-select"
+              onchange="filterByCategory()"
+            >
+              <option value="all">All</option>
+              <option
+                th:each="category : ${categories}"
+                th:value="${category}"
+                th:text="${category}"
+              ></option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title font-aclonica">All Products</h2>
+      <div class="row" th:if="${products.size() > 0}" id="productGrid">
+        <div
+          class="col-md-3 mb-4"
+          th:each="product : ${products}"
+          th:attr="data-category=${product.category}, data-barangay=${product.barangayName}, data-city=${productMunicipalities[product.id]}"
+        >
+          <a
+            th:href="@{'/products/' + ${product.id}}"
+            style="text-decoration: none; color: inherit"
+          >
+            <div class="product-card">
+              <img
+                th:src="${#lists.isEmpty(product.imageUrls)} ? '/images/placeholder.jpg' : @{${product.imageUrls[0]}}"
+                alt="Product Image"
+                class="product-img"
+              />
+              <div class="product-info">
+                <h5 th:text="${product.name}"></h5>
+                <p class="mb-1 text-muted" th:text="${product.brand}"></p>
+                <p class="mb-1">
+                  <span th:text="${product.barangayName}"></span>,
+                  <span th:text="${productMunicipalities[product.id]}"></span>
+                </p>
+                <p class="mb-1"><span th:text="${product.category}"></span></p>
+                <div class="rating">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                  <i class="far fa-star"></i>
+                </div>
+                <div>
+                  <span class="price"
+                    >Php <span th:text="${product.price}"></span
+                  ></span>
+                </div>
+                <small
+                  class="text-muted"
+                  th:text="${#temporals.format(product.createdAt, 'MMM dd, yyyy h:mm a')}"
+                ></small>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div
+        th:if="${products.size() == 0}"
+        class="alert alert-info text-center font-aclonica"
+      >
+        No products available at the moment.
       </div>
     </div>
-  </div>
 
-  <div class="container mt-5">
+    <!-- Near You Section -->
+    <div class="container mt-5 d-none" id="nearYouSectionWrapper">
+      <div id="nearYouSection">
+        <h2 class="section-title font-aclonica">Near You</h2>
+        <div class="row" id="nearYouGrid">
+          <!-- Products will be cloned here dynamically via JS -->
+        </div>
+        <div
+          id="noNearYouFound"
+          class="alert alert-warning text-center d-none font-aclonica"
+        >
+          No nearby products found based on your input.
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="container mt-5">
     <h2 class="section-title font-aclonica">Top Selling</h2>
     <div class="row">
       <div class="col-md-3 mb-4" th:each="product : ${products}" th:if="${product.price < 200}">
@@ -151,78 +230,107 @@
         </a>        
       </div>
     </div>
-  </div>
+  </div> -->
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    function filterByCategory() {
-      const selected = document.getElementById("categoryFilter").value.toLowerCase();
-      const cards = document.querySelectorAll("#productGrid .col-md-3");
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function filterByCategory() {
+        const selected = document
+          .getElementById("categoryFilter")
+          .value.toLowerCase();
+        const cards = document.querySelectorAll("#productGrid .col-md-3");
 
-      cards.forEach(card => {
-        const category = card.getAttribute("data-category").toLowerCase();
-        card.style.display = (selected === "all" || category === selected) ? "block" : "none";
-      });
-      filterByLocation();
-    }
+        cards.forEach((card) => {
+          const category = card.getAttribute("data-category").toLowerCase();
+          card.style.display =
+            selected === "all" || category === selected ? "block" : "none";
+        });
+        filterByLocation();
+      }
 
-    function filterByLocation() {
-      const search = document.getElementById("locationSearch").value.toLowerCase().trim();
-      const cards = document.querySelectorAll("#productGrid .col-md-3");
+      function filterByLocation() {
+        const search = document
+          .getElementById("locationSearch")
+          .value.toLowerCase()
+          .trim();
+        const cards = document.querySelectorAll("#productGrid .col-md-3");
 
-      cards.forEach(card => {
-        const barangay = (card.getAttribute("data-barangay") || "").toLowerCase();
-        const city = (card.getAttribute("data-city") || "").toLowerCase();
-        const matchesLocation = barangay.includes(search) || city.includes(search);
+        cards.forEach((card) => {
+          const barangay = (
+            card.getAttribute("data-barangay") || ""
+          ).toLowerCase();
+          const city = (card.getAttribute("data-city") || "").toLowerCase();
+          const matchesLocation =
+            barangay.includes(search) || city.includes(search);
 
-        // Also match category if one is selected
-        const selectedCategory = document.getElementById("categoryFilter").value.toLowerCase();
-        const cardCategory = (card.getAttribute("data-category") || "").toLowerCase();
-        const matchesCategory = selectedCategory === "all" || cardCategory === selectedCategory;
+          // Also match category if one is selected
+          const selectedCategory = document
+            .getElementById("categoryFilter")
+            .value.toLowerCase();
+          const cardCategory = (
+            card.getAttribute("data-category") || ""
+          ).toLowerCase();
+          const matchesCategory =
+            selectedCategory === "all" || cardCategory === selectedCategory;
 
-        card.style.display = (matchesLocation && matchesCategory) ? "block" : "none";
-      });
+          card.style.display =
+            matchesLocation && matchesCategory ? "block" : "none";
+        });
+      }
+      function handleNearMe() {
+        const input = document
+          .getElementById("nearMeInput")
+          .value.trim()
+          .toLowerCase();
+        const cards = document.querySelectorAll("#productGrid .col-md-3");
+        const nearYouGrid = document.getElementById("nearYouGrid");
+        const noNearYouFound = document.getElementById("noNearYouFound");
+        const nearYouSectionWrapper = document.getElementById(
+          "nearYouSectionWrapper"
+        );
 
-    }
-    function handleNearMe() {
-      const input = document.getElementById("nearMeInput").value.trim().toLowerCase();
-      const cards = document.querySelectorAll("#productGrid .col-md-3");
-      const nearYouGrid = document.getElementById("nearYouGrid");
-      const noNearYouFound = document.getElementById("noNearYouFound");
-      const nearYouSectionWrapper = document.getElementById("nearYouSectionWrapper");
+        nearYouGrid.innerHTML = ""; // Clear previous results
+        let hasMatches = false;
 
-      nearYouGrid.innerHTML = ""; // Clear previous results
-      let hasMatches = false;
+        cards.forEach((card) => {
+          const barangay = (
+            card.getAttribute("data-barangay") || ""
+          ).toLowerCase();
+          const city = (card.getAttribute("data-city") || "").toLowerCase();
+          const matches = barangay.includes(input) || city.includes(input);
 
-      cards.forEach(card => {
-        const barangay = (card.getAttribute("data-barangay") || "").toLowerCase();
-        const city = (card.getAttribute("data-city") || "").toLowerCase();
-        const matches = barangay.includes(input) || city.includes(input);
+          if (matches) {
+            const clonedCard = card.cloneNode(true);
+            nearYouGrid.appendChild(clonedCard);
+            hasMatches = true;
+          }
+        });
 
-        if (matches) {
-          const clonedCard = card.cloneNode(true);
-          nearYouGrid.appendChild(clonedCard);
-          hasMatches = true;
-        }
-      });
+        // Show or hide the whole Near You section
+        nearYouSectionWrapper.classList.toggle("d-none", !hasMatches);
+        noNearYouFound.classList.toggle("d-none", hasMatches);
 
-      // Show or hide the whole Near You section
-      nearYouSectionWrapper.classList.toggle("d-none", !hasMatches);
-      noNearYouFound.classList.toggle("d-none", hasMatches);
+        const modalElement = document.getElementById("nearMeModal");
+        const modal = bootstrap.Modal.getInstance(modalElement);
 
-      const modalElement = document.getElementById("nearMeModal");
-      const modal = bootstrap.Modal.getInstance(modalElement);
+        // Scroll after modal closes
+        modalElement.addEventListener(
+          "hidden.bs.modal",
+          function scrollToNearYouOnce() {
+            if (hasMatches) {
+              document
+                .getElementById("nearYouSection")
+                .scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+            modalElement.removeEventListener(
+              "hidden.bs.modal",
+              scrollToNearYouOnce
+            );
+          }
+        );
 
-      // Scroll after modal closes
-      modalElement.addEventListener('hidden.bs.modal', function scrollToNearYouOnce() {
-        if (hasMatches) {
-          document.getElementById("nearYouSection").scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-        modalElement.removeEventListener('hidden.bs.modal', scrollToNearYouOnce);
-      });
-
-      modal.hide();
-    }
-  </script>
-</body>
+        modal.hide();
+      }
+    </script>
+  </body>
 </html>
