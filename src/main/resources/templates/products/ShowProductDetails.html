@@ -119,6 +119,94 @@
     </div>
   </div>
 </div>
+<!-- Ratings and Reviews Section -->
+<div class="container my-5">
+  <div class="card shadow-lg border-0 rounded-4 p-4">
+    <h4 class="form-title mb-4">Ratings & Reviews</h4>
+
+    <!-- Average Rating -->
+    <div class="mb-4">
+      <strong>Average Rating:</strong>
+      <div>
+        <th:block th:each="i : ${#numbers.sequence(1,5)}">
+          <i class="fas fa-star"
+            th:classappend="${i <= avgRating} ? 'text-warning' : 'text-secondary'"></i>
+        </th:block>
+        <small class="text-muted" th:text="'(' + ${#numbers.formatDecimal(avgRating, 1, 1)} + ')'"></small>
+      </div>
+
+      <!-- List of Reviews -->
+      <div th:if="${reviews != null and !reviews.isEmpty()}" class="mt-4">
+        <div th:each="review : ${reviews}" class="d-flex align-items-start mb-4 border-bottom pb-3">
+          
+          <!-- Avatar -->
+          <div class="me-3">
+            <i class="fas fa-user-circle fa-2x text-primary"></i>
+          </div>
+
+          <!-- Review Content -->
+          <div class="flex-grow-1">
+            <!-- Name and Stars -->
+            <div class="d-flex align-items-center justify-content-between">
+              <strong th:text="${review.reviewer.firstName + ' ' + review.reviewer.lastName}">John Doe</strong>
+              <div class="text-warning small ms-2">
+                <th:block th:each="i : ${#numbers.sequence(1,5)}">
+                  <i class="fas fa-star" th:classappend="${i <= review.rating} ? 'text-warning' : 'text-secondary'"></i>
+                </th:block>
+              </div>
+            </div>
+            <!-- Comment -->
+            <p class="mb-0 small mt-1" th:text="${review.comment}">Great product!</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+    <!-- Leave a Review Form -->
+    <div th:if="${canLeaveReview}" class="mt-5">
+      <h5 class="form-title mb-3">Leave a Review</h5>
+      <form th:action="@{/api/reviews/create}" method="post" th:object="${reviewDto}">
+        <input type="hidden" th:field="*{productId}" />
+        <input type="hidden" th:field="*{reviewedUserId}" />
+
+        <div class="mb-3">
+          <label class="form-label">Rating</label>
+          <div id="star-rating" class="d-flex gap-1" style="cursor: pointer;">
+            <i class="fas fa-star text-secondary" data-value="1"></i>
+            <i class="fas fa-star text-secondary" data-value="2"></i>
+            <i class="fas fa-star text-secondary" data-value="3"></i>
+            <i class="fas fa-star text-secondary" data-value="4"></i>
+            <i class="fas fa-star text-secondary" data-value="5"></i>
+          </div>
+          <input type="hidden" th:field="*{rating}" id="ratingInput" />
+        </div>
+        
+
+        <div class="mb-3">
+          <label class="form-label">Comment (optional)</label>
+          <textarea th:field="*{comment}" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+      </form>
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="reviewToast" class="toast text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body">
+              Thank you for submitting your review!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+</div>
 
 <!-- Chat Modal -->
 <div th:replace="components/ChatModal :: chatModal(${product})"></div>
